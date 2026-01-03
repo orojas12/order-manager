@@ -7,7 +7,7 @@ Order Manager is a simple and easy-to-use order management system designed for s
 ### Order management
 
 - Create orders manually
-- View order status (paid, shipped, completed, cancelled)
+- View order status (paid, shipped, completed, cancelled, refunded)
 - View detailed order information
   - Order id
   - Customer details
@@ -39,12 +39,14 @@ Order Manager is a simple and easy-to-use order management system designed for s
 - Low-stock alerts
 - Support basic product variants (size, color, etc)
 
-### Payment tracking
+### Payments & Invoicing
 
 Note: direct payment handling will not be supported at this time
 
-- Record payment method (e.g., PayPal, CashApp, other third-party payment platforms)
+- Record payment amount and method (e.g., PayPal, CashApp, other third-party payment platforms)
 - Record payment status (Pending, Paid, Refunded, Partially Refunded)
+- Record whether order invoice has been sent to customer
+- Support downloading/printing basic order invoice pdf
 
 ### Shipping & fulfillment
 
@@ -60,6 +62,7 @@ Note: direct payment handling will not be supported at this time
 - Dashboard
   - Recent orders
   - Unpaid orders
+  - Unsent invoices
   - Unshipped orders
 - Search and filter orders by:
   - Date
