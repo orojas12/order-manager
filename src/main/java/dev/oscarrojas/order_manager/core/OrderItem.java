@@ -2,22 +2,22 @@ package dev.oscarrojas.order_manager.core;
 
 public class OrderItem {
 
-    private ProductVariant productVariant;
+    private Product product;
     private int quantity;
     private double netPrice;
 
-    public OrderItem(ProductVariant productVariant, int quantity, double netPrice) {
-        this.productVariant = productVariant;
+    public OrderItem(Product product, int quantity, double netPrice) {
+        this.product = product;
         this.quantity = quantity;
         this.netPrice = netPrice;
     }
 
-    public ProductVariant getProductVariant() {
-        return productVariant;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductVariant(ProductVariant productVariant) {
-        this.productVariant = productVariant;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getQuantity() {

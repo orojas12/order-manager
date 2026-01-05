@@ -1,0 +1,30 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    gap: 1.6rem;
+    background-color: yellow;
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+main {
+    padding-inline: 1.6rem;
+}

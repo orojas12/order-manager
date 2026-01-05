@@ -53,7 +53,7 @@ public class ProductVariant {
 
     public void setAttribute(String name, String value) {
         if (name == null) {
-            throw new IllegalArgumentException("Null attribute name not permitted");
+            throw new IllegalArgumentException("Null attribute productName not permitted");
         }
         this.attributes.put(name, value);
     }

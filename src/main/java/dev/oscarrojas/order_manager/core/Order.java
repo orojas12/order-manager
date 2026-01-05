@@ -8,17 +8,33 @@ import java.util.UUID;
 
 public class Order {
 
+    private String id;
     private OrderStatus status;
     private List<OrderItem> items;
     private List<Payment> payments;
     private List<Refund> refunds;
     private Customer customer;
-    private Shipment shipment;
+    private Address shippingAddress;
 
     public Order() {
         items = new ArrayList<>();
         payments = new ArrayList<>();
         refunds = new ArrayList<>();
+    }
+
+    public Order(
+            String id, OrderStatus status, Collection<OrderItem> items, Customer customer, Address shippingAddress) {
+        this.id = id;
+        this.status = status;
+        this.items = new ArrayList<>(items);
+        this.customer = customer;
+        this.shippingAddress = shippingAddress;
+        payments = new ArrayList<>();
+        refunds = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public OrderStatus getStatus() {
@@ -53,6 +69,22 @@ public class Order {
         this.refunds = new ArrayList<>(refunds);
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     public void pay(double amount, PaymentMethod method, String memo) throws OverPaymentException {
 
         if (amount > getBalance()) {
@@ -63,7 +95,6 @@ public class Order {
         payments.add(new Payment(UUID.randomUUID().toString(), amount, method, memo));
     }
 
-    @Nullable
     public Payment deletePayment(String id) {
 
         for (Payment payment : payments) {

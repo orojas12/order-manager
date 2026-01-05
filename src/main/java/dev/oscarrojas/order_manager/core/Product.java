@@ -1,23 +1,30 @@
 package dev.oscarrojas.order_manager.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Product {
 
-    private String id;
+    private String sku;
     private String name;
     private String desc;
+    private double price;
+    private Map<String, String> attributes;
 
-    public Product(String id, String name, String desc) {
-        this.id = id;
+    public Product(String sku, String name, String desc, double price, Map<String, String> attributes) {
+        this.sku = sku;
         this.name = name;
         this.desc = desc;
+        this.price = price;
+        this.attributes = attributes;
     }
 
-    public String getId() {
-        return id;
+    public String getSku() {
+        return sku;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getName() {
@@ -34,5 +41,21 @@ public class Product {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Map<String, String> getAttributes() {
+        return Map.copyOf(attributes);
+    }
+
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = new HashMap<>(attributes);
     }
 }
