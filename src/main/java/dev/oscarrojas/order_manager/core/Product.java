@@ -8,14 +8,12 @@ public class Product {
     private String sku;
     private String name;
     private String desc;
-    private double price;
     private Map<String, String> attributes;
 
-    public Product(String sku, String name, String desc, double price, Map<String, String> attributes) {
+    public Product(String sku, String name, String desc, Map<String, String> attributes) {
         this.sku = sku;
         this.name = name;
         this.desc = desc;
-        this.price = price;
         this.attributes = attributes;
     }
 
@@ -41,14 +39,6 @@ public class Product {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public Map<String, String> getAttributes() {

@@ -3,6 +3,7 @@ package dev.oscarrojas.order_manager.db;
 import dev.oscarrojas.order_manager.core.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,8 @@ public class OrderRepositoryInMemory implements OrderRepository {
     public OrderRepositoryInMemory() {
         orders = new HashMap<>();
         List<ProductData> products = List.of(
-                new ProductData(
-                        "SHI-M-B", "shirt", "cotton dress shirt for men", Map.of("size", "M", "color", "blue"), 10),
-                new ProductData(
-                        "SHI-L-R", "shirt", "cotton dress shirt for men", Map.of("size", "L", "color", "red"), 10));
+                new ProductData("SHI-M-B", "shirt", "cotton dress shirt for men", Map.of("size", "M", "color", "blue")),
+                new ProductData("SHI-L-R", "shirt", "cotton dress shirt for men", Map.of("size", "L", "color", "red")));
         orders.put(
                 "100",
                 new OrderData(
@@ -50,13 +49,19 @@ public class OrderRepositoryInMemory implements OrderRepository {
                                         item.product().sku(),
                                         item.product().name(),
                                         item.product().desc(),
-                                        item.product().price(),
                                         item.product().attributes());
-                                return new OrderItem(product, item.quantity(), item.netPrice());
+                                return new OrderItem(product, item.quantity(), item.unitPrice());
                             })
                             .toList();
                     return new Order(order.id(), order.status(), items, customer, order.shippingAddress());
                 })
                 .toList();
+    }
+
+    @Override
+    public void save(Collection<OrderData> orders) {
+        for (OrderData order : orders) {
+            this.orders.put(order.id(), order);
+        }
     }
 }

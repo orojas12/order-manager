@@ -129,7 +129,7 @@ public class Order {
 
     private double getTotal() {
         return items.stream()
-                .mapToDouble(item -> item.getNetPrice() * item.getQuantity())
+                .mapToDouble(item -> item.getUnitPrice() * item.getQuantity())
                 .sum();
     }
 

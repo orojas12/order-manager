@@ -14,14 +14,16 @@
     <tr>
       <th>ID</th>
       <th>Status</th>
+      <th>Total</th>
       <th>Customer</th>
       <th>Shipping Address</th>
     </tr>
     <tr th:each="order : ${orders}">
-      <th th:text="${order.id}">id</th>
-      <th th:text="${order.status}">status</th>
-      <th th:text="${order.customer.name}">name</th>
-      <th th:text="${order.shippingAddress.street}">street</th>
+      <th th:text="${order.id}"></th>
+      <th th:text="${order.status}"></th>
+      <th th:text="${order.total}"></th>
+      <th th:text="${order.customer.name}"></th>
+      <th th:text="${order.shippingAddress.street}"></th>
     </tr>
   </table>
 </main>

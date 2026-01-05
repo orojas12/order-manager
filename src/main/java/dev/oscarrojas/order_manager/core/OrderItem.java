@@ -4,12 +4,12 @@ public class OrderItem {
 
     private Product product;
     private int quantity;
-    private double netPrice;
+    private double unitPrice;
 
-    public OrderItem(Product product, int quantity, double netPrice) {
+    public OrderItem(Product product, int quantity, double unitPrice) {
         this.product = product;
         this.quantity = quantity;
-        this.netPrice = netPrice;
+        this.unitPrice = unitPrice;
     }
 
     public Product getProduct() {
@@ -28,11 +28,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public double getNetPrice() {
-        return netPrice;
+    public double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setNetPrice(double netPrice) {
-        this.netPrice = netPrice;
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

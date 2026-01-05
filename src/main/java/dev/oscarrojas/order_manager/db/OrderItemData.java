@@ -1,3 +1,3 @@
 package dev.oscarrojas.order_manager.db;
 
-public record OrderItemData(ProductData product, int quantity, double netPrice) {}
+public record OrderItemData(ProductData product, int quantity, double unitPrice) {}

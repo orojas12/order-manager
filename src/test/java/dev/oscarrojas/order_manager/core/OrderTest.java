@@ -10,7 +10,7 @@ public class OrderTest {
 
     @Test
     void refund_amountExceedingPaymentTotal_throwsException() {
-        Product product = new Product("sku", "shirt", "", 5, new HashMap<>());
+        Product product = new Product("sku", "shirt", "", new HashMap<>());
         Order order = new Order();
         order.setItems(List.of(new OrderItem(product, 1, 1.0)));
         order.setPayments(List.of(new Payment("id", 0.5)));
@@ -22,7 +22,7 @@ public class OrderTest {
 
     @Test
     void pay_amountExceedingBalance_throwsException() throws OverPaymentException {
-        Product product = new Product("sku", "shirt", "", 5, new HashMap<>());
+        Product product = new Product("sku", "shirt", "", new HashMap<>());
         Order order = new Order();
         order.setItems(List.of(new OrderItem(product, 1, 1.0)));
 
