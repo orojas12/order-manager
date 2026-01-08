@@ -4,10 +4,10 @@ import dev.oscarrojas.order_manager.core.Address;
 
 import java.util.List;
 
-public record OrderView(
+public record OrderResponse(
         String id,
         String status,
-        String total,
-        List<OrderItemView> items,
-        CustomerView customer,
+        long total,
+        List<OrderItemResponse> items,
+        CustomerResponse customer,
         Address shippingAddress) {}

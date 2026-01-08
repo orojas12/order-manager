@@ -77,6 +77,7 @@ public class Order {
         this.customer = customer;
     }
 
+    @Nullable
     public Address getShippingAddress() {
         return shippingAddress;
     }

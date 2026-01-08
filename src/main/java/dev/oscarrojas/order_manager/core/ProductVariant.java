@@ -8,10 +8,10 @@ public class ProductVariant {
 
     private String sku;
     private Product product;
-    private double price;
+    private long price;
     private Map<String, String> attributes;
 
-    public ProductVariant(String sku, Product product, double price) {
+    public ProductVariant(String sku, Product product, long price) {
         this.sku = sku;
         this.product = product;
         this.price = price;
@@ -34,11 +34,11 @@ public class ProductVariant {
         this.product = product;
     }
 
-    public double getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

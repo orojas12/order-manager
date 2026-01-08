@@ -1,13 +1,17 @@
 package dev.oscarrojas.order_manager.orders;
 
 import dev.oscarrojas.order_manager.core.OrderItem;
+import dev.oscarrojas.order_manager.core.OrderStatus;
+import dev.oscarrojas.order_manager.db.OrderCustomerData;
+import dev.oscarrojas.order_manager.db.OrderData;
 import dev.oscarrojas.order_manager.db.OrderItemData;
 import dev.oscarrojas.order_manager.db.OrderRepository;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
+import dev.oscarrojas.order_manager.db.ProductData;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService {
@@ -18,34 +22,64 @@ public class OrderService {
         this.repository = repository;
     }
 
-    private String getTotal(Collection<OrderItem> items) {
-        BigDecimal total = new BigDecimal(0);
-        for (OrderItem item : items) {
-            BigDecimal quant = new BigDecimal(item.getQuantity());
-            BigDecimal price = new BigDecimal(item.getUnitPrice());
-            total = total.add(quant.multiply(price));
-        }
-        return total.toString();
-        // TODO: find a way to display total price with 2 decimal places
+    private long getTotal(Collection<OrderItem> items) {
+        return items.stream().mapToLong(OrderItem::getUnitPrice).sum();
     }
 
-    public List<OrderView> getOrders() {
-        return repository.getAll().stream()
-                .map(order -> {
-                    return new OrderView(
-                            order.getId(),
-                            order.getStatus().toString(),
-                            getTotal(order.getItems()),
-                            order.getItems().stream()
-                                    .map(item -> new OrderItemView(
-                                            item.getProduct().getName(), item.getQuantity(), item.getUnitPrice()))
-                                    .toList(),
-                            new CustomerView(
-                                    order.getCustomer().getName(),
-                                    order.getCustomer().getEmail(),
-                                    order.getCustomer().getPhone()),
-                            order.getShippingAddress());
-                })
+    private OrderResponse mapToResponse(OrderData data) {
+        List<OrderItemResponse> items = data.items().stream()
+                .map(item -> new OrderItemResponse(item.product().name(), item.quantity(), item.unitPrice()))
                 .toList();
+
+        CustomerResponse customer = new CustomerResponse(
+                data.customer().name(), data.customer().email(), data.customer().phone());
+
+        long orderTotal = items.stream().mapToLong(OrderItemResponse::unitPrice).sum();
+
+        return new OrderResponse(
+                data.id(), data.status().toString(), orderTotal, items, customer, data.shippingAddress());
+    }
+
+    public List<OrderResponse> getOrders() {
+        return repository.getAll().stream().map(this::mapToResponse).toList();
+    }
+
+    public Optional<OrderResponse> getOrderDetails(String orderId) {
+        Optional<OrderData> opt = repository.get(orderId);
+
+        if (opt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        OrderData data = opt.get();
+        OrderResponse response = mapToResponse(data);
+        return Optional.of(response);
+    }
+
+    // TODO: add order validation
+    public OrderResponse createOrder(CreateOrderAndCustomerRequest request) {
+        List<OrderItemData> items = request.items().stream()
+                .map(item -> new OrderItemData(
+                        new ProductData(
+                                item.product().sku(),
+                                item.product().name(),
+                                item.product().desc(),
+                                item.product().attributes()),
+                        item.quantity(),
+                        item.unitPrice()))
+                .toList();
+
+        OrderCustomerData customer = new OrderCustomerData(
+                UUID.randomUUID().toString(),
+                request.customer().name(),
+                request.customer().email(),
+                request.customer().phone());
+
+        OrderData order = new OrderData(
+                UUID.randomUUID().toString(), OrderStatus.CREATED, items, customer, request.shippingAddress());
+
+        repository.save(order);
+
+        return mapToResponse(order);
     }
 }

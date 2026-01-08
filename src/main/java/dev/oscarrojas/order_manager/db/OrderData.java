@@ -9,5 +9,5 @@ public record OrderData(
         String id,
         OrderStatus status,
         Collection<OrderItemData> items,
-        CustomerData customer,
+        OrderCustomerData customer,
         Address shippingAddress) {}

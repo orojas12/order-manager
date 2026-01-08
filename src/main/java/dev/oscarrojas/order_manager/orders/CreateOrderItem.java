@@ -1,3 +1,3 @@
 package dev.oscarrojas.order_manager.orders;
 
-public record CreateOrderItem(String sku, int quantity) {}
+public record CreateOrderItem(CreateProduct product, int quantity, long unitPrice) {}

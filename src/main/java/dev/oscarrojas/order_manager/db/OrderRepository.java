@@ -1,12 +1,14 @@
 package dev.oscarrojas.order_manager.db;
 
-import dev.oscarrojas.order_manager.core.Order;
-
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository {
-    List<Order> getAll();
+    Collection<OrderData> getAll();
+
+    void save(OrderData order);
 
     void save(Collection<OrderData> orders);
+
+    Optional<OrderData> get(String id);
 }

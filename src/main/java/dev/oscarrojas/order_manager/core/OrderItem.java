@@ -4,9 +4,9 @@ public class OrderItem {
 
     private Product product;
     private int quantity;
-    private double unitPrice;
+    private long unitPrice;
 
-    public OrderItem(Product product, int quantity, double unitPrice) {
+    public OrderItem(Product product, int quantity, long unitPrice) {
         this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
@@ -28,11 +28,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
+    public long getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(long unitPrice) {
         this.unitPrice = unitPrice;
     }
 }
