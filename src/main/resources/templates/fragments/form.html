@@ -1,0 +1,26 @@
+<div th:fragment="form(content)">
+  <form class="d-flex flex-column gap-5">
+    <div th:replace="${content}">
+    </div>
+  </form>
+</div>
+
+<div th:fragment="section(title, content)">
+  <h2 class="h4" th:text="${title}"></h2>
+  <div th:replace="${content}"></div>
+</div>
+
+<div th:fragment="text-field(id, name, label, required)" class="mt-2">
+  <label th:for="${id}" th:text="${label}"></label>
+  <input required type="text" th:id="${id}" th:name="${name}">
+</div>
+
+<div th:fragment="email-field(id, name, label, required)" class="mt-2">
+  <label th:for="${id}" th:text="${label}"></label>
+  <input required type="email" th:id="${id}" th:name="${name}">
+</div>
+
+<div th:fragment="textarea-field(id, name, label, required)" class="mt-2">
+  <label th:for="${id}" th:text="${label}"></label>
+  <textarea required th:id="${id}" th:name="${name}"></textarea>
+</div>

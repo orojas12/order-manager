@@ -25,71 +25,68 @@
 
 <main>
   <div class="container">
-    <h1 class="h5 text-secondary mb-4">Create Order</h1>
-    <form class="orders__form">
-      <div class="container-fluid orders__form-section">
-        <h2 class="h4">Customer</h2>
-        <div class="row row-cols-3">
-          <div class="orders__form-item">
+    <h1 class="h5 text-secondary mb-5">Create Order</h1>
+
+    <form th:replace="~{fragments/form::form(~{::/div})}">
+      <div th:insert="~{fragments/form::section(Customer, ~{::/div})}" class="row">
+        <div th:replace="~{fragments/form::text-field(customer-name, customerName, Name, true)}">
+        </div>
+      </div>
+    </form>
+
+    <form class="d-flex flex-column gap-5">
+
+      <div>
+        <div class="row mt-2">
+          <div class="col-3">
             <label class="form-label" for="customer-name">Name</label>
             <input required class="form-control" type="text" name="customerName" id="customer-name">
           </div>
-          <div class="orders__form-item">
+          <div class="col-3">
             <label class="form-label" for="customer-email">Email</label>
             <input class="form-control" type="email" name="customerEmail" id="customer-email">
           </div>
-          <div class="orders__form-item">
+          <div class="col-3">
             <label class="form-label" for="customer-phone">Phone #</label>
             <input class="form-control" type="text" name="phone" id="customer-phone">
           </div>
         </div>
       </div>
-      <div class="orders__form-section">
-        <h2 class="h4">Shipping Address</h2>
+
+      <div>
         <div class="row">
-          <div class="orders__form-item col-8">
+          <h2 class="h4">Shipping Address</h2>
+        </div>
+        <div class="row mt-2">
+          <div class="col-8">
             <label class="form-label" for="address-street">Street</label>
             <input required class="form-control" type="text" name="addressStreet" id="address-street">
           </div>
         </div>
-        <div class="row row-cols-3">
-          <div class="orders__form-item">
+        <div class="row mt-2">
+          <div class="col-3">
             <label class="form-label" for="address-city">City</label>
             <input required class="form-control" type="text" name="addressCity" id="address-city">
           </div>
-          <div class="orders__form-item">
+          <div class="col-3">
             <label class="form-label" for="address-state">State</label>
             <input required class="form-control" type="text" name="addressState" id="address-state">
           </div>
-          <div class="orders__form-item">
+          <div class="col-3">
             <label class="form-label" for="address-zip">ZIP</label>
             <input required class="form-control" type="text" name="addressZip" id="address-zip">
           </div>
         </div>
       </div>
 
-      <div class="orders__form-section">
+      <div class="">
         <h2 class="h4">Products</h2>
-        <div id="product-list">
-          <div class="card">
-            <div class="row card-body p-4">
-              <div class="orders__form-item col-6">
-                <label class="form-label product-name-label" for="product-name-0">Name</label>
-                <input required class="form-control product-name-input" type="text" name="productName"
-                       id="product-name-0">
-              </div>
-              <div class="orders__form-item col-6">
-                <label class="form-label product-desc-label" for="product-desc-0">Description</label>
-                <textarea class="form-control product-desc-input" rows="3" name="productDesc"
-                          id="product-desc-0"></textarea>
-              </div>
-            </div>
-          </div>
+        <div id="product-list" class="d-flex flex-column gap-4">
         </div>
       </div>
 
       <div class="row">
-        <div class="orders__form-item d-flex justify-content-start">
+        <div class="d-flex justify-content-start">
           <button id="add-product" type="button" class="btn btn-secondary">Add product</button>
         </div>
       </div>
@@ -97,14 +94,26 @@
     </form>
 
     <div hidden id="product-template" class="card">
-      <div class="row card-body p-4">
-        <div class="orders__form-item col-6">
-          <label class="form-label product-name-label">Name</label>
-          <input required class="form-control product-name-input" type="text" name="productName">
+      <div class="card-body p-4">
+        <div class="row">
+          <div class="col-6">
+            <label class="form-label product-name-label">Name</label>
+            <input required class="form-control product-name-input" type="text" name="productName">
+          </div>
+          <div class="col-6">
+            <label class="form-label product-desc-label">Description</label>
+            <textarea class="form-control product-desc-input" rows="3" name="productDesc"></textarea>
+          </div>
         </div>
-        <div class="orders__form-item col-6">
-          <label class="form-label product-desc-label">Description</label>
-          <textarea class="form-control product-desc-input" rows="3" name="productDesc"></textarea>
+        <div class="row">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-danger btn-sm btn-delete-product" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                   class="bi bi-trash-fill" viewBox="0 0 16 16">
+                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
