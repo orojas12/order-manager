@@ -1,31 +1,39 @@
 "use strict";
 
-let products = 1;
+let productCount = 0;
 
 const productTemplate = document.getElementById("product-template");
 const productList = document.getElementById("product-list");
 
 document.getElementById("add-product").addEventListener("click", () => {
-    const productElement = productTemplate.cloneNode(true);
-    productElement.removeAttribute("hidden");
-    productElement.removeAttribute("id");
+    const el = productTemplate.cloneNode(true);
+    const nameInput = el.querySelector(".product-name-input");
+    const nameLabel = el.querySelector(".product-name-label");
+    const descInput = el.querySelector(".product-desc-input");
+    const descLabel = el.querySelector(".product-desc-label");
+    const deleteBtn = el.querySelector(".btn-delete-product");
+    const priceInput = el.querySelector(".product-price-input");
+    const priceLabel = el.querySelector(".product-price-label");
 
-    productElement.querySelector(".product-name-input")
-        .setAttribute("id", `product-name-${products}`);
+    el.removeAttribute("hidden");
+    el.removeAttribute("id");
 
-    productElement.querySelector(".product-name-label")
-        .setAttribute("for", `product-name-${products}`);
+    nameInput.setAttribute("id", `product-name-${productCount}`);
+    nameLabel.setAttribute("for", `product-name-${productCount}`);
+    descInput.setAttribute("id", `product-desc-${productCount}`);
+    descLabel.setAttribute("for", `product-desc-${productCount}`);
+    priceInput.setAttribute("id", `product-price-${productCount}`);
+    priceLabel.setAttribute("for", `product-name-${productCount}`);
 
-    productElement.querySelector(".product-desc-input")
-        .setAttribute("id", `product-desc-${products}`);
-
-    productElement.querySelector(`.product-desc-label`)
-        .setAttribute("for", `product-desc-${products}`);
-
-    productElement.querySelector(".btn-delete-product").addEventListener("click", () => {
-        productElement.remove();
+    priceInput.addEventListener("change", function () {
+        this.value = parseFloat(this.value).toFixed(2);
     });
 
-    productList.appendChild(productElement);
-    products++;
+    deleteBtn.addEventListener("click", () => {
+        el.remove();
+    });
+
+
+    productList.appendChild(el);
+    productCount++;
 });
