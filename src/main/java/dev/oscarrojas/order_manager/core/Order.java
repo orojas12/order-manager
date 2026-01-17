@@ -1,6 +1,8 @@
 package dev.oscarrojas.order_manager.core;
 
 import jakarta.annotation.Nullable;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,11 +17,22 @@ public class Order {
     private List<Refund> refunds;
     private Customer customer;
     private Address shippingAddress;
+    private Instant creationDate;
 
     public Order() {
         items = new ArrayList<>();
         payments = new ArrayList<>();
         refunds = new ArrayList<>();
+    }
+
+    public Order(Builder builder) {
+        this.id = builder.id;
+        this.status = builder.status;
+        this.items = builder.items;
+        this.customer = builder.customer;
+        this.shippingAddress =
+                new Address(builder.street, builder.city, builder.state, builder.postalCode, builder.country);
+        this.creationDate = builder.creationDate;
     }
 
     public Order(
@@ -144,5 +157,84 @@ public class Order {
 
     private double getTotalRefund() {
         return refunds.stream().mapToDouble(Refund::getAmount).sum();
+    }
+
+    public Instant getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Instant creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public class Builder {
+        private String id;
+        private OrderStatus status;
+        private List<OrderItem> items;
+        private Customer customer;
+        private String street;
+        private String city;
+        private String state;
+        private String postalCode;
+        private String country;
+        private Instant creationDate;
+
+        public Builder() {
+            items = new ArrayList<>();
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder status(OrderStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder item(OrderItem item) {
+            items.add(item);
+            return this;
+        }
+
+        public Builder customer(Customer customer) {
+            this.customer = customer;
+            return this;
+        }
+
+        public Builder street(String street) {
+            this.street = street;
+            return this;
+        }
+
+        public Builder city(String city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder state(String state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder postalCode(String postalCode) {
+            this.postalCode = postalCode;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder creationDate(Instant creationDate) {
+            this.creationDate = creationDate;
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
     }
 }

@@ -16,31 +16,48 @@
   <title>Orders</title>
 </head>
 <body>
-{{> header}}
-<main class="container">
-  <h1>Orders</h1>
-  <div class="orders__controls">
-    <a href="/create-order">Create Order</a>
-  </div>
-  <table class="table">
-    <tr>
-      <th>ID</th>
-      <th>Status</th>
-      <th>Total</th>
-      <th>Customer</th>
-      <th>Shipping Address</th>
-    </tr>
-    {{#orders}}
+{{>layout/header}}
+{{<layout/main}}
+  {{$title}}Orders{{/title}}
+  {{$content}}
+    <div class="orders__controls">
+      <a href="/create-order" class="btn btn-primary">Create Order</a>
+    </div>
+    <table id="orders-table" class="table table-hover">
+      <thead>
       <tr>
-        <th><a href="/order-details?id={{id}}">{{id}}</a></th>
-        <th>{{status}}</th>
-        <th>{{total}}</th>
-        <th>{{customer.name}}</th>
-        <th>{{shippingAddress.street}}</th>
+        <th>Date Created</th>
+        <th>ID</th>
+        <th>Status</th>
+        <th class="text-end">Total</th>
+        <th>Customer</th>
       </tr>
-    {{/orders}}
-  </table>
-</main>
+      </thead>
+      <tbody>
+      {{#orders}}
+        <tr>
+          <td>{{creationDate}}</td>
+          <td><a href="/order-details?id={{id}}">{{id}}</a></td>
+          <td>{{status}}</td>
+          <td class="text-end">{{total}}</td>
+          <td>{{customer.name}}</td>
+        </tr>
+      {{/orders}}
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+      <nav aria-label="order list pages">
+        <ul class="pagination">
+          {{#paginationLinks}}
+            <li class="page-item {{#isCurrent}}active{{/isCurrent}}">
+              <a class="page-link" href="{{href}}">{{label}}</a>
+            </li>
+          {{/paginationLinks}}
+        </ul>
+      </nav>
+    </div>
+  {{/content}}
+{{/layout/main}}
 </body>
 </html>
 

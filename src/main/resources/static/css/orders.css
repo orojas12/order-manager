@@ -3,10 +3,14 @@
     gap: 1.6rem;
 }
 
-.order-details__summary {
-    list-style: none;
-    margin-bottom: 1rem;
-    padding: 0;
+.order-summary__label {
+    font-weight: 600;
+    color: var(--bs-tertiary-color);
+}
+
+.order-details__product {
+    display: grid;
+    
 }
 
 .order-details__summary li {

@@ -1,13 +1,16 @@
 package dev.oscarrojas.order_manager.orders;
 
-import dev.oscarrojas.order_manager.core.OrderItem;
 import dev.oscarrojas.order_manager.core.OrderStatus;
 import dev.oscarrojas.order_manager.db.OrderCustomerData;
 import dev.oscarrojas.order_manager.db.OrderData;
 import dev.oscarrojas.order_manager.db.OrderItemData;
 import dev.oscarrojas.order_manager.db.OrderRepository;
 import dev.oscarrojas.order_manager.db.ProductData;
-import java.util.Collection;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,10 +25,6 @@ public class OrderService {
         this.repository = repository;
     }
 
-    private long getTotal(Collection<OrderItem> items) {
-        return items.stream().mapToLong(OrderItem::getUnitPrice).sum();
-    }
-
     private OrderResponse mapToResponse(OrderData data) {
         List<OrderItemResponse> items = data.items().stream()
                 .map(item -> new OrderItemResponse(item.product().name(), item.quantity(), item.unitPrice()))
@@ -37,7 +36,13 @@ public class OrderService {
         long orderTotal = items.stream().mapToLong(OrderItemResponse::unitPrice).sum();
 
         return new OrderResponse(
-                data.id(), data.status().toString(), orderTotal, items, customer, data.shippingAddress());
+                data.id(),
+                data.creationDate(),
+                data.status().toString(),
+                orderTotal,
+                items,
+                customer,
+                data.shippingAddress());
     }
 
     public List<OrderResponse> getOrders() {
@@ -58,6 +63,7 @@ public class OrderService {
 
     // TODO: add order validation
     public OrderResponse createOrder(CreateOrderAndCustomerRequest request) {
+
         List<OrderItemData> items = request.items().stream()
                 .map(item -> new OrderItemData(
                         new ProductData(
@@ -75,8 +81,14 @@ public class OrderService {
                 request.customer().email(),
                 request.customer().phone());
 
-        OrderData order = new OrderData(
-                UUID.randomUUID().toString(), OrderStatus.CREATED, items, customer, request.shippingAddress());
+        OrderData order = new OrderData.Builder()
+                .id(UUID.randomUUID().toString())
+                .status(OrderStatus.CREATED)
+                .items(items)
+                .customer(customer)
+                .shippingAddress(request.shippingAddress())
+                .creationDate(Instant.now())
+                .build();
 
         repository.save(order);
 

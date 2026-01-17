@@ -2,7 +2,7 @@
 
 let productCount = 0;
 
-const productTemplate = document.getElementById("product-template");
+const productTemplate = document.getElementById("product-card-template");
 const productList = document.getElementById("product-list");
 
 document.getElementById("add-product").addEventListener("click", () => {

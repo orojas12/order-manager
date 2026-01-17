@@ -16,40 +16,63 @@
   <title>Order Details</title>
 </head>
 <body>
-{{> header}}
-<main>
-  <h1>Order {{order.id}}</h1>
-  <ul class="order-details__summary">
-    <li>Status: {{order.status}}</li>
-    <li>Customer: {{order.customer.name}}</li>
-    <li>Email: {{order.customer.email}}</li>
-    <li>Phone: {{order.customer.phone}}</li>
-  </ul>
-  <table class="order-details__order-items">
-    <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Unit Price</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#order.items}}
-      <tr>
-        <td>{{name}}</td>
-        <td>{{quantity}}</td>
-        <td>{{unitPrice}}</td>
-      </tr>
-    {{/order.items}}
-    </tbody>
-    <tfoot>
-    <tr>
-      <th scope="row">Total</th>
-      <td>{{order.total}}</td>
-    </tr>
-    </tfoot>
-  </table>
-</main>
+{{>layout/header}}
+{{<layout/main}}
+  {{$title}}Order Details{{/title}}
+  {{$content}}
+    <div class="d-flex flex-column gap-3">
+      <div class="order-summary__item">
+        <div class="order-summary__label">ID</div>
+        <div class="order-summary__value">{{order.id}}</div>
+      </div>
+      <div class="order-summary__item">
+        <div class="order-summary__label">Created</div>
+        <div class="order-summary__value">{{order.creationDate}}</div>
+      </div>
+      <div class="order-summary__item">
+        <div class="order-summary__label">Status</div>
+        <div class="order-summary__value badge rounded-pill bg-primary">{{order.status}}</div>
+      </div>
+      <div class="order-summary__item">
+        <div class="order-summary__label">Customer</div>
+        <div class="order-summary__value">{{order.customer.name}}</div>
+      </div>
+      <div class="order-summary__item">
+        <div class="order-summary__label">Email</div>
+        <div class="order-summary__value">{{order.customer.email}}</div>
+      </div>
+      <div class="order-summary__item">
+        <div class="order-summary__label">Phone</div>
+        <div class="order-summary__value">{{order.customer.phone}}</div>
+      </div>
+      <div class="row g-2">
+        <div class="col-12 order-summary__label">Products</div>
+        {{#order.items}}
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 h6">{{name}}</div>
+                  <div class="col-6 mt-2 d-flex justify-content-center align-items-center">
+                    <div class="row d-flex justify-content-center text-center">
+                      <div class="col-12 text-secondary">Qty</div>
+                      <div class="col-12 fs-3 text-primary">{{quantity}}</div>
+                    </div>
+                  </div>
+                  <div class="col-6 mt-2 d-flex justify-content-center align-items-center">
+                    <div class="row d-flex justify-content-center text-center">
+                      <div class="col-12 text-secondary">Price</div>
+                      <div class="col-12 fs-3 text-primary">{{unitPrice}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/order.items}}
+      </div>
+  {{/content}}
+{{/layout/main}}
 </body>
 </html>
 

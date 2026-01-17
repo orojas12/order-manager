@@ -21,12 +21,13 @@
 </head>
 <body>
 
-{{> header}}
+{{>layout/header}}
 
-<main>
-  <div class="container">
-    <h1 class="h5 text-secondary">Create Order</h1>
+{{<layout/main}}
 
+  {{$title}}Create Order{{/title}}
+
+  {{$content}}
     <form class="d-flex flex-column gap-4">
 
       <div class="mt-4">
@@ -89,7 +90,7 @@
 
     </form>
 
-    <div hidden id="product-template" class="card">
+    <div hidden id="product-card-template" class="card shadow border-0">
       <div class="row gx-3 card-body p-4">
         <div class="col-6 d-flex flex-column">
           <div>
@@ -123,8 +124,9 @@
         </div>
       </div>
     </div>
+  {{/content}}
 
-  </div>
-</main>
+{{/layout/main}}
+
 </body>
 </html>

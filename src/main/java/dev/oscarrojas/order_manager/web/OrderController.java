@@ -3,6 +3,10 @@ package dev.oscarrojas.order_manager.web;
 import dev.oscarrojas.order_manager.orders.CreateOrderAndCustomerRequest;
 import dev.oscarrojas.order_manager.orders.OrderResponse;
 import dev.oscarrojas.order_manager.orders.OrderService;
+
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -15,20 +19,55 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderController {
 
     private final OrderService service;
+    private final DateTimeFormatter dateTimeFormatter;
 
     public OrderController(OrderService service) {
         this.service = service;
+        this.dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy").withZone(ZoneId.systemDefault());
     }
 
     @GetMapping("/orders")
-    public String get(Model model) {
+    public String get(Model model, @RequestParam(required = false, defaultValue = "1") int page) {
+        int ordersPerPage = 50;
         List<OrderResponse> orders = service.getOrders();
 
-        List<OrderView> orderViews = orders.stream().map(this::mapToView).toList();
+        List<OrderView> orderViews = orders.stream()
+                .skip((long) (page - 1) * ordersPerPage)
+                .limit(ordersPerPage)
+                .map(this::mapToView)
+                .toList();
 
-        if (orders != null) {
-            model.addAttribute("orders", orderViews);
+        String pathName = "?page=";
+        List<PaginationLink> paginationLinks = new ArrayList<>();
+
+        int lastPageNum = (int) Math.ceil((float) orders.size() / ordersPerPage);
+
+        if (page < 4) {
+            for (int i = 1; i < 6; i++) {
+                paginationLinks.add(new PaginationLink(String.valueOf(i), i, i == page, pathName + i));
+            }
+        } else if (page > lastPageNum - 2) {
+            for (int i = page - 3; i < lastPageNum + 1; i++) {
+                paginationLinks.add(new PaginationLink(String.valueOf(i), i, page == i, pathName + i));
+            }
+        } else {
+            for (int i = page - 2; i < page + 3; i++) {
+                paginationLinks.add(new PaginationLink(String.valueOf(i), i, i == page, pathName + i));
+            }
         }
+
+        if (page > 1) {
+            paginationLinks.addFirst(new PaginationLink("Previous", page - 1, false, pathName + (page - 1)));
+            paginationLinks.addFirst(new PaginationLink("First", 1, false, pathName + 1));
+        }
+
+        if (page < lastPageNum) {
+            paginationLinks.addLast(new PaginationLink("Last", lastPageNum, false, pathName + lastPageNum));
+            paginationLinks.addLast(new PaginationLink("Next", page + 1, false, pathName + (page + 1)));
+        }
+
+        model.addAttribute("orders", orderViews);
+        model.addAttribute("paginationLinks", paginationLinks);
 
         return "orders";
     }
@@ -74,6 +113,13 @@ public class OrderController {
 
         String orderTotal = String.format("%.2f", order.total() / 100.0);
 
-        return new OrderView(order.id(), order.status(), orderTotal, items, customer, order.shippingAddress());
+        return new OrderView(
+                order.id(),
+                dateTimeFormatter.format(order.creationDate()),
+                order.status(),
+                orderTotal,
+                items,
+                customer,
+                order.shippingAddress());
     }
 }
