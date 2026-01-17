@@ -1,14 +1,14 @@
 package dev.oscarrojas.order_manager.web;
 
-import dev.oscarrojas.order_manager.orders.CreateOrderAndCustomerRequest;
-import dev.oscarrojas.order_manager.orders.OrderResponse;
-import dev.oscarrojas.order_manager.orders.OrderService;
+import dev.oscarrojas.order_manager.core.Address;
+import dev.oscarrojas.order_manager.core.OrderItem;
+import dev.oscarrojas.order_manager.orders.*;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import dev.oscarrojas.order_manager.web.forms.CreateOrderForm;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,13 +91,35 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public String createOrder(Model model, @RequestBody CreateOrderAndCustomerRequest formData) {
-        OrderResponse response = service.createOrder(formData);
+    public String createOrder(Model model, CreateOrderForm formData) {
+        List<CreateOrderItem> items = formData.products().stream()
+                .map(product -> new CreateOrderItem(
+                        new CreateProduct(
+                                UUID.randomUUID().toString(), product.name(), product.desc(), new HashMap<>()),
+                        product.quantity(),
+                        Math.round(product.unitPrice() * 100)))
+                .toList();
+
+        CreateCustomerRequest customer = new CreateCustomerRequest(
+                formData.customer().name(),
+                formData.customer().email(),
+                formData.customer().phone());
+
+        Address shippingAddress = new Address(
+                formData.shippingAddress().street(),
+                formData.shippingAddress().city(),
+                formData.shippingAddress().state(),
+                formData.shippingAddress().postalCode(),
+                formData.shippingAddress().country());
+
+        CreateOrderAndCustomerRequest request = new CreateOrderAndCustomerRequest(items, customer, shippingAddress);
+
+        OrderResponse response = service.createOrder(request);
         OrderView orderView = mapToView(response);
 
         model.addAttribute("order", orderView);
 
-        return "order-details";
+        return "redirect:/order-details?id=" + response.id();
     }
 
     private OrderView mapToView(OrderResponse order) {

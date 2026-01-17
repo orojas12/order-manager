@@ -7,6 +7,7 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/index.css"/>
   <link rel="stylesheet" href="/css/create-order.css"/>
+  <link rel="stylesheet" href="/css/header.css"/>
   <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
           integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
           crossorigin="anonymous"></script>
@@ -28,7 +29,7 @@
   {{$title}}Create Order{{/title}}
 
   {{$content}}
-    <form class="d-flex flex-column gap-4">
+    <form class="d-flex flex-column gap-4" action="/orders" method="post">
 
       <div class="mt-4">
         <div class="row">
@@ -37,15 +38,15 @@
         <div class="row gx-3 mt-3">
           <div class="col-3">
             <label class="form-label" for="customer-name">Name</label>
-            <input required class="form-control" type="text" name="customerName" id="customer-name">
+            <input required class="form-control" type="text" name="customer.name" id="customer-name">
           </div>
           <div class="col-3">
             <label class="form-label" for="customer-email">Email</label>
-            <input class="form-control" type="email" name="customerEmail" id="customer-email">
+            <input class="form-control" type="email" name="customer.email" id="customer-email">
           </div>
           <div class="col-3">
             <label class="form-label" for="customer-phone">Phone #</label>
-            <input class="form-control" type="text" name="phone" id="customer-phone">
+            <input class="form-control" type="text" name="customer.phone" id="customer-phone">
           </div>
         </div>
       </div>
@@ -56,22 +57,22 @@
         </div>
         <div class="row mt-3">
           <div class="col-8">
-            <label class="form-label" for="address-street">Street</label>
-            <input required class="form-control" type="text" name="addressStreet" id="address-street">
+            <label class="form-label" for="street-input">Street</label>
+            <input required class="form-control" type="text" name="shippingAddress.street" id="street-input">
           </div>
         </div>
         <div class="row gx-3 mt-3">
           <div class="col-3">
-            <label class="form-label" for="address-city">City</label>
-            <input required class="form-control" type="text" name="addressCity" id="address-city">
+            <label class="form-label" for="city-input">City</label>
+            <input required class="form-control" type="text" name="shippingAddress.street" id="city-input">
           </div>
           <div class="col-3">
-            <label class="form-label" for="address-state">State</label>
-            <input required class="form-control" type="text" name="addressState" id="address-state">
+            <label class="form-label" for="state-input">State</label>
+            <input required class="form-control" type="text" name="shippingAddress.state" id="state-input">
           </div>
           <div class="col-3">
-            <label class="form-label" for="address-zip">ZIP</label>
-            <input required class="form-control" type="text" name="addressZip" id="address-zip">
+            <label class="form-label" for="postal-code-input">ZIP</label>
+            <input required class="form-control" type="text" name="shippingAddress.postalCode" id="postal-code-input">
           </div>
         </div>
       </div>
@@ -88,6 +89,12 @@
         </div>
       </div>
 
+      <div class="row mt-4">
+        <div class="d-flex justify-content-start">
+          <button id="btn-submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
     </form>
 
     <div hidden id="product-card-template" class="card shadow border-0">
@@ -95,24 +102,24 @@
         <div class="col-6 d-flex flex-column">
           <div>
             <label class="form-label product-name-label">Name</label>
-            <input required class="form-control product-name-input" type="text" name="productName">
+            <input required class="form-control product-name-input" type="text" name="">
           </div>
           <div class="d-flex gap-3 mt-3">
             <div class="flex-grow-1">
               <label class="form-label product-price-label">Price</label>
               <input required class="form-control product-price-input" type="number" min="0" step=".01"
-                     name="productUnitPrice">
+                     name="">
             </div>
             <div class="flex-grow-1">
               <label class="form-label product-quantity-label">Qty.</label>
               <input required class="form-control product-quantity-input" type="number" min="0" step="1"
-                     name="productQuantity">
+                     name="">
             </div>
           </div>
         </div>
         <div class="col-6">
           <label class="form-label product-desc-label">Description</label>
-          <textarea class="form-control product-desc-input" rows="3" name="productDesc"></textarea>
+          <textarea class="form-control product-desc-input" rows="3" name=""></textarea>
         </div>
         <div class="col-12 mt-3 d-flex justify-content-end">
           <button class="btn btn-danger btn-sm btn-delete-product" type="button">

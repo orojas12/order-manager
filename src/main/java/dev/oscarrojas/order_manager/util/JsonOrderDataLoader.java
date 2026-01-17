@@ -23,6 +23,6 @@ public class JsonOrderDataLoader {
 
         List<OrderData> orders = mapper.readValue(stream, new TypeReference<List<OrderData>>() {});
 
-        repository.save(orders);
+        //        repository.save(orders);
     }
 }

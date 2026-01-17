@@ -26,6 +26,7 @@ public class AppConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
+        http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
