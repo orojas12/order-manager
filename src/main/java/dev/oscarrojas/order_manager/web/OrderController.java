@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class OrderController {
@@ -74,13 +75,15 @@ public class OrderController {
 
     @GetMapping("/order-details")
     public String getOrderDetails(Model model, @RequestParam String id) {
-        Optional<OrderResponse> response = service.getOrderDetails(id);
+        if (!model.containsAttribute("order")) {
+            Optional<OrderResponse> response = service.getOrderDetails(id);
 
-        if (response.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            if (response.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+
+            model.addAttribute("order", mapToView(response.get()));
         }
-
-        model.addAttribute("order", mapToView(response.get()));
 
         return "order-details";
     }
@@ -91,7 +94,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public String createOrder(Model model, CreateOrderForm formData) {
+    public String createOrder(RedirectAttributes model, CreateOrderForm formData) {
         List<CreateOrderItem> items = formData.products().stream()
                 .map(product -> new CreateOrderItem(
                         new CreateProduct(
@@ -117,7 +120,8 @@ public class OrderController {
         OrderResponse response = service.createOrder(request);
         OrderView orderView = mapToView(response);
 
-        model.addAttribute("order", orderView);
+        model.addFlashAttribute("order", orderView);
+        model.addFlashAttribute("isNew", true);
 
         return "redirect:/order-details?id=" + response.id();
     }

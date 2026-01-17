@@ -1,0 +1,42 @@
+.order-summary__label {
+    font-weight: 600;
+    color: var(--bs-tertiary-color);
+}
+
+.order-details__product {
+    display: grid;
+
+}
+
+.order-details__summary li {
+    margin-bottom: 1rem;
+}
+
+.order-details_order-items tfoot th {
+    text-align: right;
+}
+
+.toast-container {
+    position: fixed;
+    margin: 1.5rem;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (min-width: 992px) {
+    .toast-container {
+        bottom: 0;
+        left: unset;
+        right: 0;
+        transform: none;
+    }
+}
+
+.color-primary {
+    color: #675782;
+}
+
+.color-bg-light {
+    color: #FFF7EF;
+}

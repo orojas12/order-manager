@@ -1,0 +1,29 @@
+:root {
+    --color-primary: #675782;
+    --color-bg-light: #fff7ef;
+    --color-secondary: #897058;
+    --color-tertiary: #607755;
+    --color-accent: #e9a9e7;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    padding-block: 2rem;
+    flex-grow: 1;
+}
+
+.header-logo {
+    height: 4rem;
+    object-fit: contain;
+}

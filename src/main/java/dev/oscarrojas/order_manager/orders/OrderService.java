@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +47,10 @@ public class OrderService {
     }
 
     public List<OrderResponse> getOrders() {
-        return repository.getAll().stream().map(this::mapToResponse).toList();
+        return repository.getAll().stream()
+                .map(this::mapToResponse)
+                .sorted(Comparator.comparing(OrderResponse::creationDate).reversed())
+                .toList();
     }
 
     public Optional<OrderResponse> getOrderDetails(String orderId) {

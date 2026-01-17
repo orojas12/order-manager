@@ -2,21 +2,3 @@
     display: flex;
     gap: 1.6rem;
 }
-
-.order-summary__label {
-    font-weight: 600;
-    color: var(--bs-tertiary-color);
-}
-
-.order-details__product {
-    display: grid;
-    
-}
-
-.order-details__summary li {
-    margin-bottom: 1rem;
-}
-
-.order-details_order-items tfoot th {
-    text-align: right;
-}
