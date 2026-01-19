@@ -1,21 +1,20 @@
 package dev.oscarrojas.order_manager.core;
 
-import jakarta.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProductVariant {
 
     private String sku;
-    private Product product;
-    private long price;
+    private String name;
+    private String desc;
     private Map<String, String> attributes;
 
-    public ProductVariant(String sku, Product product, long price) {
+    public ProductVariant(String sku, String name, String desc, Map<String, String> attributes) {
         this.sku = sku;
-        this.product = product;
-        this.price = price;
-        this.attributes = new HashMap<>();
+        this.name = name;
+        this.desc = desc;
+        this.attributes = attributes;
     }
 
     public String getSku() {
@@ -26,40 +25,27 @@ public class ProductVariant {
         this.sku = sku;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getName() {
+        return name;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getPrice() {
-        return price;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
-    }
-
-    @Nullable
-    public String getAttribute(String name) {
-        return attributes.get(name);
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Map<String, String> getAttributes() {
         return Map.copyOf(attributes);
     }
 
-    public void setAttribute(String name, String value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Null attribute productName not permitted");
-        }
-        this.attributes.put(name, value);
-    }
-
-    @Nullable
-    public String removeAttribute(String name) {
-        return attributes.remove(name);
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = new HashMap<>(attributes);
     }
 }

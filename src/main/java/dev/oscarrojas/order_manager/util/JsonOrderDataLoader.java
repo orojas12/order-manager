@@ -1,6 +1,7 @@
 package dev.oscarrojas.order_manager.util;
 
-import dev.oscarrojas.order_manager.db.*;
+import dev.oscarrojas.order_manager.order.OrderModel;
+import dev.oscarrojas.order_manager.db.order.OrderRepository;
 import org.springframework.core.io.ClassPathResource;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public class JsonOrderDataLoader {
         ObjectMapper mapper = new ObjectMapper();
         InputStream stream = resource.getInputStream();
 
-        List<OrderData> orders = mapper.readValue(stream, new TypeReference<List<OrderData>>() {});
+        List<OrderModel> orders = mapper.readValue(stream, new TypeReference<List<OrderModel>>() {});
 
         repository.save(orders);
     }

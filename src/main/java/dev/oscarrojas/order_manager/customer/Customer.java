@@ -1,4 +1,6 @@
-package dev.oscarrojas.order_manager.core;
+package dev.oscarrojas.order_manager.customer;
+
+import dev.oscarrojas.order_manager.core.Address;
 
 public class Customer {
 
@@ -48,5 +50,13 @@ public class Customer {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

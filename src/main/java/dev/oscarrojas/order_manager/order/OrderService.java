@@ -1,20 +1,17 @@
-package dev.oscarrojas.order_manager.orders;
+package dev.oscarrojas.order_manager.order;
 
 import dev.oscarrojas.order_manager.core.OrderStatus;
-import dev.oscarrojas.order_manager.db.OrderCustomerData;
-import dev.oscarrojas.order_manager.db.OrderData;
-import dev.oscarrojas.order_manager.db.OrderItemData;
-import dev.oscarrojas.order_manager.db.OrderRepository;
-import dev.oscarrojas.order_manager.db.ProductData;
+import dev.oscarrojas.order_manager.db.*;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import dev.oscarrojas.order_manager.customer.CustomerModel;
+import dev.oscarrojas.order_manager.db.order.OrderLineModel;
+import dev.oscarrojas.order_manager.db.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,22 +23,26 @@ public class OrderService {
         this.repository = repository;
     }
 
-    private OrderResponse mapToResponse(OrderData data) {
-        List<OrderItemResponse> items = data.items().stream()
-                .map(item -> new OrderItemResponse(item.product().name(), item.quantity(), item.unitPrice()))
+    private OrderResponse mapToResponse(OrderModel data) {
+        List<OrderLineResponse> lines = data.items().stream()
+                .map(line -> new OrderLineResponse(
+                        line.productVariant().sku(), line.productVariant().name(), line.quantity(), line.unitPrice()))
                 .toList();
 
         CustomerResponse customer = new CustomerResponse(
-                data.customer().name(), data.customer().email(), data.customer().phone());
+                data.customer().id(),
+                data.customer().name(),
+                data.customer().email(),
+                data.customer().phone());
 
-        long orderTotal = items.stream().mapToLong(OrderItemResponse::unitPrice).sum();
+        long orderTotal = lines.stream().mapToLong(OrderLineResponse::unitPrice).sum();
 
         return new OrderResponse(
                 data.id(),
                 data.creationDate(),
                 data.status().toString(),
                 orderTotal,
-                items,
+                lines,
                 customer,
                 data.shippingAddress());
     }
@@ -54,13 +55,13 @@ public class OrderService {
     }
 
     public Optional<OrderResponse> getOrderDetails(String orderId) {
-        Optional<OrderData> opt = repository.get(orderId);
+        Optional<OrderModel> opt = repository.get(orderId);
 
         if (opt.isEmpty()) {
             return Optional.empty();
         }
 
-        OrderData data = opt.get();
+        OrderModel data = opt.get();
         OrderResponse response = mapToResponse(data);
         return Optional.of(response);
     }
@@ -68,9 +69,9 @@ public class OrderService {
     // TODO: add order validation
     public OrderResponse createOrder(CreateOrderAndCustomerRequest request) {
 
-        List<OrderItemData> items = request.items().stream()
-                .map(item -> new OrderItemData(
-                        new ProductData(
+        List<OrderLineModel> orderLines = request.items().stream()
+                .map(item -> new OrderLineModel(
+                        new ProductVariantModel(
                                 item.product().sku(),
                                 item.product().name(),
                                 item.product().desc(),
@@ -79,16 +80,16 @@ public class OrderService {
                         item.unitPrice()))
                 .toList();
 
-        OrderCustomerData customer = new OrderCustomerData(
+        CustomerModel customer = new CustomerModel(
                 UUID.randomUUID().toString(),
                 request.customer().name(),
                 request.customer().email(),
                 request.customer().phone());
 
-        OrderData order = new OrderData.Builder()
+        OrderModel order = new OrderModel.Builder()
                 .id(UUID.randomUUID().toString())
                 .status(OrderStatus.CREATED)
-                .items(items)
+                .items(orderLines)
                 .customer(customer)
                 .shippingAddress(request.shippingAddress())
                 .creationDate(Instant.now())

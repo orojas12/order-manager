@@ -1,4 +1,4 @@
-package dev.oscarrojas.order_manager.orders;
+package dev.oscarrojas.order_manager.order;
 
 import dev.oscarrojas.order_manager.core.Address;
 
@@ -10,6 +10,6 @@ public record OrderResponse(
         Instant creationDate,
         String status,
         long total,
-        List<OrderItemResponse> items,
+        List<OrderLineResponse> items,
         CustomerResponse customer,
         Address shippingAddress) {}

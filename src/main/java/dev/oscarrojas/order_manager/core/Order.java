@@ -1,5 +1,6 @@
 package dev.oscarrojas.order_manager.core;
 
+import dev.oscarrojas.order_manager.customer.Customer;
 import jakarta.annotation.Nullable;
 
 import java.time.Instant;
@@ -12,7 +13,7 @@ public class Order {
 
     private String id;
     private OrderStatus status;
-    private List<OrderItem> items;
+    private List<OrderLine> items;
     private List<Payment> payments;
     private List<Refund> refunds;
     private Customer customer;
@@ -36,7 +37,7 @@ public class Order {
     }
 
     public Order(
-            String id, OrderStatus status, Collection<OrderItem> items, Customer customer, Address shippingAddress) {
+            String id, OrderStatus status, Collection<OrderLine> items, Customer customer, Address shippingAddress) {
         this.id = id;
         this.status = status;
         this.items = new ArrayList<>(items);
@@ -58,11 +59,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderItem> getItems() {
+    public List<OrderLine> getItems() {
         return List.copyOf(items);
     }
 
-    public void setItems(Collection<OrderItem> items) {
+    public void setItems(Collection<OrderLine> items) {
         this.items = new ArrayList<>(items);
     }
 
@@ -170,7 +171,7 @@ public class Order {
     public class Builder {
         private String id;
         private OrderStatus status;
-        private List<OrderItem> items;
+        private List<OrderLine> items;
         private Customer customer;
         private String street;
         private String city;
@@ -193,7 +194,7 @@ public class Order {
             return this;
         }
 
-        public Builder item(OrderItem item) {
+        public Builder item(OrderLine item) {
             items.add(item);
             return this;
         }

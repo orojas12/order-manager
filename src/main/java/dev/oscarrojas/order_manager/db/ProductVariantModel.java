@@ -3,9 +3,9 @@ package dev.oscarrojas.order_manager.db;
 import java.util.HashMap;
 import java.util.Map;
 
-public record ProductData(String sku, String name, String desc, Map<String, String> attributes) {
+public record ProductVariantModel(String sku, String name, String desc, Map<String, String> attributes) {
 
-    public ProductData {
+    public ProductVariantModel {
         attributes = Map.copyOf(attributes);
     }
 
@@ -44,8 +44,8 @@ public record ProductData(String sku, String name, String desc, Map<String, Stri
             return this;
         }
 
-        public ProductData build() {
-            return new ProductData(sku, name, desc, attributes);
+        public ProductVariantModel build() {
+            return new ProductVariantModel(sku, name, desc, attributes);
         }
     }
 }

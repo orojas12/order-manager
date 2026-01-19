@@ -1,30 +1,32 @@
-package dev.oscarrojas.order_manager.db;
+package dev.oscarrojas.order_manager.order;
 
 import dev.oscarrojas.order_manager.core.Address;
 import dev.oscarrojas.order_manager.core.OrderStatus;
+import dev.oscarrojas.order_manager.customer.CustomerModel;
+import dev.oscarrojas.order_manager.db.order.OrderLineModel;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public record OrderData(
+public record OrderModel(
         String id,
         OrderStatus status,
-        Collection<OrderItemData> items,
-        OrderCustomerData customer,
+        Collection<OrderLineModel> items,
+        CustomerModel customer,
         Address shippingAddress,
         Instant creationDate) {
 
-    public OrderData {
+    public OrderModel {
         items = List.copyOf(items);
     }
 
     public static class Builder {
         private String id;
         private OrderStatus status;
-        private Collection<OrderItemData> items;
-        private OrderCustomerData customer;
+        private Collection<OrderLineModel> items;
+        private CustomerModel customer;
         private Address address;
         private Instant creationDate;
 
@@ -42,17 +44,17 @@ public record OrderData(
             return this;
         }
 
-        public Builder item(OrderItemData item) {
+        public Builder item(OrderLineModel item) {
             items.add(item);
             return this;
         }
 
-        public Builder items(Collection<OrderItemData> items) {
+        public Builder items(Collection<OrderLineModel> items) {
             this.items = items;
             return this;
         }
 
-        public Builder customer(OrderCustomerData customer) {
+        public Builder customer(CustomerModel customer) {
             this.customer = customer;
             return this;
         }
@@ -67,8 +69,8 @@ public record OrderData(
             return this;
         }
 
-        public OrderData build() {
-            return new OrderData(id, status, items, customer, address, creationDate);
+        public OrderModel build() {
+            return new OrderModel(id, status, items, customer, address, creationDate);
         }
     }
 }

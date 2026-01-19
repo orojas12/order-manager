@@ -1,42 +1,42 @@
-package dev.oscarrojas.order_manager.db;
+package dev.oscarrojas.order_manager.db.order;
 
-import dev.oscarrojas.order_manager.core.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import dev.oscarrojas.order_manager.order.OrderModel;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class OrderRepositoryInMemory implements OrderRepository {
 
-    private final Map<String, OrderData> orders;
+    private final Map<String, OrderModel> orders;
 
     public OrderRepositoryInMemory() {
         orders = new HashMap<>();
     }
 
     @Override
-    public Collection<OrderData> getAll() {
+    public Collection<OrderModel> getAll() {
         return List.copyOf(orders.values());
     }
 
     @Override
-    public void save(OrderData order) {
+    public void save(OrderModel order) {
         orders.put(order.id(), order);
     }
 
     @Override
-    public void save(Collection<OrderData> orders) {
-        for (OrderData order : orders) {
+    public void save(Collection<OrderModel> orders) {
+        for (OrderModel order : orders) {
             this.orders.put(order.id(), order);
         }
     }
 
     @Override
-    public Optional<OrderData> get(String id) {
+    public Optional<OrderModel> get(String id) {
         return Optional.ofNullable(orders.get(id));
     }
 }

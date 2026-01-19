@@ -1,8 +1,7 @@
 package dev.oscarrojas.order_manager.web;
 
 import dev.oscarrojas.order_manager.core.Address;
-import dev.oscarrojas.order_manager.core.OrderItem;
-import dev.oscarrojas.order_manager.orders.*;
+import dev.oscarrojas.order_manager.order.*;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -129,7 +128,7 @@ public class OrderController {
     private OrderView mapToView(OrderResponse order) {
         List<OrderItemView> items = order.items().stream()
                 .map(item -> new OrderItemView(
-                        item.name(), String.valueOf(item.quantity()), String.valueOf(item.unitPrice() / 100.0)))
+                        item.description(), String.valueOf(item.quantity()), String.valueOf(item.unitPrice() / 100.0)))
                 .toList();
 
         CustomerView customer = new CustomerView(

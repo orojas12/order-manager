@@ -1,4 +1,4 @@
-package dev.oscarrojas.order_manager.orders;
+package dev.oscarrojas.order_manager.order;
 
 import java.util.Map;
 

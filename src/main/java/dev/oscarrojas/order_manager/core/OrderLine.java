@@ -1,23 +1,23 @@
 package dev.oscarrojas.order_manager.core;
 
-public class OrderItem {
+public class OrderLine {
 
-    private Product product;
+    private ProductVariant productVariant;
     private int quantity;
     private long unitPrice;
 
-    public OrderItem(Product product, int quantity, long unitPrice) {
-        this.product = product;
+    public OrderLine(ProductVariant productVariant, int quantity, long unitPrice) {
+        this.productVariant = productVariant;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductVariant getProduct() {
+        return productVariant;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(ProductVariant productVariant) {
+        this.productVariant = productVariant;
     }
 
     public int getQuantity() {

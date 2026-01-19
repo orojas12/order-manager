@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+{{<base/head}}
+{{/base/head}}
+<body>
+{{>layout/header}}
+{{<layout/main}}
+  {{$title}}Customers{{/title}}
+  {{$content}}
+    <div class="row">
+      <a href="#" class="btn btn-primary">Create Customer</a>
+    </div>
+    <div class="row">
+      <div class="fw-bold col-4">Name</div>
+      <div class="fw-bold col-4">Phone</div>
+      <div class="fw-bold col-4">Email</div>
+    </div>
+    {{#customers}}
+      <div class="row">
+        <div class="col-4">{{name}}</div>
+        <div class="col-4">{{phone}}</div>
+        <div class="col-4">{{email}}</div>
+      </div>
+    {{/customers}}
+  {{/content}}
+{{/layout/main}}
+</body>
+</html>

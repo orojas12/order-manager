@@ -1,6 +1,6 @@
 package dev.oscarrojas.order_manager.config;
 
-import dev.oscarrojas.order_manager.db.OrderRepository;
+import dev.oscarrojas.order_manager.db.order.OrderRepository;
 import dev.oscarrojas.order_manager.util.JsonOrderDataLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
