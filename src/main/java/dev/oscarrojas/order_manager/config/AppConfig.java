@@ -1,6 +1,8 @@
 package dev.oscarrojas.order_manager.config;
 
+import dev.oscarrojas.order_manager.db.customer.CustomerRepository;
 import dev.oscarrojas.order_manager.db.order.OrderRepository;
+import dev.oscarrojas.order_manager.util.JsonCustomerDataLoader;
 import dev.oscarrojas.order_manager.util.JsonOrderDataLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +20,12 @@ public class AppConfig {
 
     private final Environment env;
     private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
 
-    public AppConfig(Environment env, OrderRepository orderRepository) {
+    public AppConfig(Environment env, OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.env = env;
         this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Bean
@@ -35,9 +39,13 @@ public class AppConfig {
     @EventListener
     public void onAppContextRefresh(ContextRefreshedEvent event) throws IOException {
         if (env.matchesProfiles("dev")) {
-            ClassPathResource resource = new ClassPathResource("fake-data/orders.json");
-            JsonOrderDataLoader loader = new JsonOrderDataLoader(orderRepository);
-            loader.load(resource);
+            ClassPathResource orders = new ClassPathResource("fake-data/orders.json");
+            JsonOrderDataLoader orderLoader = new JsonOrderDataLoader(orderRepository);
+            orderLoader.load(orders);
+
+            ClassPathResource customers = new ClassPathResource("fake-data/customers.json");
+            JsonCustomerDataLoader customerLoader = new JsonCustomerDataLoader(customerRepository);
+            customerLoader.load(customers);
         }
     }
 }

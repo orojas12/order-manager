@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+{{<base/head}}
+  {{$links}}
+    <link rel="stylesheet" href="/css/customers.css"/>
+  {{/links}}
+{{/base/head}}
+<body>
+{{>layout/header}}
+{{<layout/main}}
+  {{$title}}Customers{{/title}}
+  {{$content}}
+    <div class="row">
+      <a href="#" class="btn btn-primary">Create Customer</a>
+    </div>
+    <div class="row">
+      <div class="fw-bold col-4">Name</div>
+      <div class="fw-bold d-none d-md-block col-4">Phone</div>
+      <div class="fw-bold d-none d-md-block col-4">Email</div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {{#customers}}
+          <a class="row p-4 customer">
+            <div class="col-12 col-md-4">{{name}}</div>
+            <div class="d-none d-md-block col-4">{{phone}}</div>
+            <div class="d-none d-md-block col-4">{{email}}</div>
+          </a>
+        {{/customers}}
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <nav aria-label="order list pages">
+        <ul class="pagination">
+          {{#paginationLinks}}
+            <li class="page-item {{#isCurrent}}active{{/isCurrent}}">
+              <a class="page-link" href="{{href}}">{{label}}</a>
+            </li>
+          {{/paginationLinks}}
+        </ul>
+      </nav>
+    </div>
+  {{/content}}
+{{/layout/main}}
+</body>
+</html>

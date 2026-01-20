@@ -1,4 +1,6 @@
-package dev.oscarrojas.order_manager.core;
+package dev.oscarrojas.order_manager.order;
+
+import dev.oscarrojas.order_manager.product.ProductVariant;
 
 public class OrderLine {
 

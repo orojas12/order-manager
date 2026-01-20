@@ -10,8 +10,6 @@ public class Customer {
     private String phone;
     private Address address;
 
-    public Customer() {}
-
     public Customer(String id, String name, String email, String phone, Address address) {
         this.id = id;
         this.name = name;

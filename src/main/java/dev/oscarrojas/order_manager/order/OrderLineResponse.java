@@ -1,3 +1,5 @@
 package dev.oscarrojas.order_manager.order;
 
-public record OrderLineResponse(String sku, String description, int quantity, long unitPrice) {}
+import dev.oscarrojas.order_manager.product.ProductVariantResponse;
+
+public record OrderLineResponse(ProductVariantResponse variant, int quantity, long unitPrice) {}

@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashMap;
 import java.util.List;
+
+import dev.oscarrojas.order_manager.order.Order;
+import dev.oscarrojas.order_manager.order.OrderLine;
 import org.junit.jupiter.api.Test;
 
 public class OrderTest {

@@ -1,0 +1,14 @@
+.customer {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.customer:nth-child(even) {
+    background-color: var(--bs-tertiary-bg);
+}
+
+.customer:hover {
+    background-color: var(--bs-secondary-bg);
+}

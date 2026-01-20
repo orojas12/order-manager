@@ -1,5 +1,6 @@
-package dev.oscarrojas.order_manager.core;
+package dev.oscarrojas.order_manager.order;
 
+import dev.oscarrojas.order_manager.core.*;
 import dev.oscarrojas.order_manager.customer.Customer;
 import jakarta.annotation.Nullable;
 
@@ -168,7 +169,7 @@ public class Order {
         this.creationDate = creationDate;
     }
 
-    public class Builder {
+    public static class Builder {
         private String id;
         private OrderStatus status;
         private List<OrderLine> items;

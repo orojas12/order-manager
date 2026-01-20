@@ -9,4 +9,6 @@ public interface CustomerRepository {
     Collection<CustomerModel> getCustomers();
 
     void save(CustomerModel customer);
+
+    void save(Collection<CustomerModel> customers);
 }

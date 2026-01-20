@@ -1,4 +1,4 @@
-package dev.oscarrojas.order_manager.core;
+package dev.oscarrojas.order_manager.order;
 
 public enum OrderStatus {
     CREATED,

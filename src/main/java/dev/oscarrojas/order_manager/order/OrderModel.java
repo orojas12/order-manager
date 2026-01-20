@@ -1,9 +1,7 @@
 package dev.oscarrojas.order_manager.order;
 
 import dev.oscarrojas.order_manager.core.Address;
-import dev.oscarrojas.order_manager.core.OrderStatus;
 import dev.oscarrojas.order_manager.customer.CustomerModel;
-import dev.oscarrojas.order_manager.db.order.OrderLineModel;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,13 +11,13 @@ import java.util.List;
 public record OrderModel(
         String id,
         OrderStatus status,
-        Collection<OrderLineModel> items,
+        Collection<OrderLineModel> lines,
         CustomerModel customer,
         Address shippingAddress,
         Instant creationDate) {
 
     public OrderModel {
-        items = List.copyOf(items);
+        lines = List.copyOf(lines);
     }
 
     public static class Builder {

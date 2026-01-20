@@ -1,8 +1,5 @@
 package dev.oscarrojas.order_manager.order;
 
-import dev.oscarrojas.order_manager.core.OrderStatus;
-import dev.oscarrojas.order_manager.db.*;
-
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -10,8 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import dev.oscarrojas.order_manager.customer.CustomerModel;
-import dev.oscarrojas.order_manager.db.order.OrderLineModel;
 import dev.oscarrojas.order_manager.db.order.OrderRepository;
+import dev.oscarrojas.order_manager.product.ProductResponse;
+import dev.oscarrojas.order_manager.product.ProductVariantResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,28 +21,42 @@ public class OrderService {
         this.repository = repository;
     }
 
-    private OrderResponse mapToResponse(OrderModel data) {
-        List<OrderLineResponse> lines = data.items().stream()
-                .map(line -> new OrderLineResponse(
-                        line.productVariant().sku(), line.productVariant().name(), line.quantity(), line.unitPrice()))
+    private OrderResponse mapToResponse(OrderModel model) {
+        List<OrderLineResponse> lines = model.lines().stream()
+                .map(line -> {
+                    ProductResponse product = new ProductResponse(
+                            line.variant().product().id(),
+                            line.variant().product().brand(),
+                            line.variant().product().name(),
+                            line.variant().product().description());
+
+                    ProductVariantResponse variant = new ProductVariantResponse(
+                            line.variant().id(),
+                            line.variant().sku(),
+                            product,
+                            line.variant().attributes());
+
+                    return new OrderLineResponse(variant, line.quantity(), line.unitPrice());
+                })
                 .toList();
 
         CustomerResponse customer = new CustomerResponse(
-                data.customer().id(),
-                data.customer().name(),
-                data.customer().email(),
-                data.customer().phone());
+                model.customer().id(),
+                model.customer().name(),
+                model.customer().email(),
+                model.customer().phone(),
+                model.customer().address());
 
         long orderTotal = lines.stream().mapToLong(OrderLineResponse::unitPrice).sum();
 
         return new OrderResponse(
-                data.id(),
-                data.creationDate(),
-                data.status().toString(),
+                model.id(),
+                model.creationDate(),
+                model.status().toString(),
                 orderTotal,
                 lines,
                 customer,
-                data.shippingAddress());
+                model.shippingAddress());
     }
 
     public List<OrderResponse> getOrders() {
@@ -69,7 +81,7 @@ public class OrderService {
     // TODO: add order validation
     public OrderResponse createOrder(CreateOrderAndCustomerRequest request) {
 
-        List<OrderLineModel> orderLines = request.items().stream()
+        List<OrderLineModel> orderLines = request.lines().stream()
                 .map(item -> new OrderLineModel(
                         new ProductVariantModel(
                                 item.product().sku(),
@@ -84,7 +96,8 @@ public class OrderService {
                 UUID.randomUUID().toString(),
                 request.customer().name(),
                 request.customer().email(),
-                request.customer().phone());
+                request.customer().phone(),
+                request.customer().address());
 
         OrderModel order = new OrderModel.Builder()
                 .id(UUID.randomUUID().toString())

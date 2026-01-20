@@ -18,17 +18,18 @@ public class CustomerService {
 
     public List<CustomerResponse> getCustomers() {
         return repository.getCustomers().stream()
-                .map(customer ->
-                        new CustomerResponse(customer.id(), customer.name(), customer.email(), customer.phone()))
+                .map(customer -> new CustomerResponse(
+                        customer.id(), customer.name(), customer.email(), customer.phone(), customer.address()))
                 .toList();
     }
 
     public CustomerResponse createCustomer(CreateCustomerRequest request) {
         CustomerModel customer =
-                new CustomerModel(UUID.randomUUID().toString(), request.name(), request.email(), request.phone());
+                new CustomerModel(UUID.randomUUID().toString(), request.name(), request.email(), request.phone(), null);
 
         repository.save(customer);
 
-        return new CustomerResponse(customer.id(), customer.name(), customer.email(), customer.phone());
+        return new CustomerResponse(
+                customer.id(), customer.name(), customer.email(), customer.phone(), customer.address());
     }
 }
