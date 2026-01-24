@@ -10,6 +10,6 @@ public record OrderResponse(
         Instant creationDate,
         String status,
         long total,
-        List<OrderLineResponse> items,
+        List<OrderLineResponse> lines,
         CustomerResponse customer,
         Address shippingAddress) {}

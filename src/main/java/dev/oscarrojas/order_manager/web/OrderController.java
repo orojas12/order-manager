@@ -1,7 +1,5 @@
 package dev.oscarrojas.order_manager.web;
 
-import dev.oscarrojas.order_manager.core.Address;
-import dev.oscarrojas.order_manager.customer.CreateCustomerRequest;
 import dev.oscarrojas.order_manager.order.*;
 
 import java.time.ZoneId;
@@ -68,32 +66,16 @@ public class OrderController {
         return "create-order";
     }
 
-    @PostMapping("/orders")
+    @PostMapping("/create-order")
     public String createOrder(RedirectAttributes model, CreateOrderForm formData) {
-        List<CreateOrderLine> items = formData.products().stream()
-                .map(product -> new CreateOrderLine(
-                        new CreateProduct(
-                                UUID.randomUUID().toString(), product.name(), product.desc(), new HashMap<>()),
-                        product.quantity(),
-                        Math.round(product.unitPrice() * 100)))
+
+        List<CreateOrderLine> lines = formData.lines().stream()
+                .map(line -> new CreateOrderLine(line.variantId(), line.quantity(), (long) line.price() * 100))
                 .toList();
 
-        CreateCustomerRequest customer = new CreateCustomerRequest(
-                formData.customer().name(),
-                formData.customer().email(),
-                formData.customer().phone(),
-                formData.customer().address());
+        CreateOrderRequest order = new CreateOrderRequest(lines, formData.customerId(), formData.shippingAddress());
 
-        Address shippingAddress = new Address(
-                formData.shippingAddress().street(),
-                formData.shippingAddress().city(),
-                formData.shippingAddress().state(),
-                formData.shippingAddress().postalCode(),
-                formData.shippingAddress().country());
-
-        CreateOrderAndCustomerRequest request = new CreateOrderAndCustomerRequest(items, customer, shippingAddress);
-
-        OrderResponse response = service.createOrder(request);
+        OrderResponse response = service.createOrder(order);
         OrderView orderView = mapToView(response);
 
         model.addFlashAttribute("order", orderView);
@@ -103,9 +85,12 @@ public class OrderController {
     }
 
     private OrderView mapToView(OrderResponse order) {
-        List<OrderItemView> items = order.items().stream()
-                .map(item -> new OrderItemView(
-                        item.description(), String.valueOf(item.quantity()), String.valueOf(item.unitPrice() / 100.0)))
+        List<OrderLineView> lines = order.lines().stream()
+                .map(line -> new OrderLineView(
+                        line.variant().id(),
+                        line.variant().product().name(),
+                        String.valueOf(line.quantity()),
+                        String.valueOf(line.unitPrice() / 100.0)))
                 .toList();
 
         CustomerView customer = new CustomerView(
@@ -122,7 +107,7 @@ public class OrderController {
                 dateTimeFormatter.format(order.creationDate()),
                 order.status(),
                 orderTotal,
-                items,
+                lines,
                 customer,
                 order.shippingAddress());
     }

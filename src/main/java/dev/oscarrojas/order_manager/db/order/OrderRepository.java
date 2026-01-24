@@ -6,11 +6,12 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface OrderRepository {
+
     Collection<OrderModel> getAll();
 
-    void save(OrderModel order);
+    void create(OrderModel order);
 
-    void save(Collection<OrderModel> orders);
+    void create(Collection<OrderModel> orders);
 
     Optional<OrderModel> get(String id);
 }

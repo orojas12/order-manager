@@ -4,5 +4,4 @@ import dev.oscarrojas.order_manager.core.Address;
 
 import java.util.List;
 
-public record CreateOrderForm(
-        CreateOrderFormCustomer customer, Address shippingAddress, List<CreateOrderFormProduct> products) {}
+public record CreateOrderForm(String customerId, Address shippingAddress, List<CreateOrderLineForm> lines) {}

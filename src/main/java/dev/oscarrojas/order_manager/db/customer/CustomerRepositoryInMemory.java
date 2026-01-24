@@ -3,10 +3,7 @@ package dev.oscarrojas.order_manager.db.customer;
 import dev.oscarrojas.order_manager.customer.CustomerModel;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class CustomerRepositoryInMemory implements CustomerRepository {
@@ -16,6 +13,11 @@ public class CustomerRepositoryInMemory implements CustomerRepository {
     @Override
     public Collection<CustomerModel> getCustomers() {
         return List.copyOf(customers.values());
+    }
+
+    @Override
+    public Optional<CustomerModel> get(String customerId) {
+        return Optional.ofNullable(customers.get(customerId));
     }
 
     @Override

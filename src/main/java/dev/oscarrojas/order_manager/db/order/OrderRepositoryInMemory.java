@@ -24,12 +24,12 @@ public class OrderRepositoryInMemory implements OrderRepository {
     }
 
     @Override
-    public void save(OrderModel order) {
+    public void create(OrderModel order) {
         orders.put(order.id(), order);
     }
 
     @Override
-    public void save(Collection<OrderModel> orders) {
+    public void create(Collection<OrderModel> orders) {
         for (OrderModel order : orders) {
             this.orders.put(order.id(), order);
         }

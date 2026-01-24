@@ -8,6 +8,6 @@ public record OrderView(
         String creationDate,
         String status,
         String total,
-        List<OrderItemView> items,
+        List<OrderLineView> items,
         CustomerView customer,
         Address shippingAddress) {}

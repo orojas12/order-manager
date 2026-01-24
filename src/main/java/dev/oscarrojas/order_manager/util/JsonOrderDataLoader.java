@@ -24,6 +24,6 @@ public class JsonOrderDataLoader {
 
         List<OrderModel> orders = mapper.readValue(stream, new TypeReference<List<OrderModel>>() {});
 
-        repository.save(orders);
+        repository.create(orders);
     }
 }
