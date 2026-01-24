@@ -11,26 +11,53 @@ import static org.junit.jupiter.api.Assertions.*;
 class CreateOrderRequestValidatorTest {
 
     @Test
-    void validate_zeroLines_returnsException() {
+    void validate_minimumOrderLines() {
+
+        CreateOrderRequestValidator validator = new CreateOrderRequestValidator();
 
         CreateOrderRequest request =
                 new CreateOrderRequest(List.of(), "1", new Address("100 1st St", "New York City", "NY", "10001", "US"));
-
-        CreateOrderRequestValidator validator = new CreateOrderRequestValidator();
 
         assertNotNull(validator.validate(request));
     }
 
     @Test
-    void validate_lessThanOneQuantity_returnsException() {
+    void validate_orderLineMinimumQuantity() {
 
-        CreateOrderRequest request = new CreateOrderRequest(
+        CreateOrderRequestValidator validator = new CreateOrderRequestValidator();
+
+        CreateOrderRequest request1 = new CreateOrderRequest(
                 List.of(new CreateOrderLine("1", 0, 1)),
                 "1",
                 new Address("100 1st St", "New York City", "NY", "10001", "US"));
 
+        assertNotNull(validator.validate(request1));
+
+        CreateOrderRequest request2 = new CreateOrderRequest(
+                List.of(new CreateOrderLine("1", 0, 1)),
+                "1",
+                new Address("100 1st St", "New York City", "NY", "10001", "US"));
+
+        assertNotNull(validator.validate(request2));
+    }
+
+    @Test
+    void validate_orderLineMinimumUnitPrice() {
+
         CreateOrderRequestValidator validator = new CreateOrderRequestValidator();
 
-        assertNotNull(validator.validate(request));
+        CreateOrderRequest request1 = new CreateOrderRequest(
+                List.of(new CreateOrderLine("1", 1, -1)),
+                "1",
+                new Address("100 1st St", "New York City", "NY", "10001", "US"));
+
+        assertNotNull(validator.validate(request1));
+
+        CreateOrderRequest request2 = new CreateOrderRequest(
+                List.of(new CreateOrderLine("1", 1, 0)),
+                "1",
+                new Address("100 1st St", "New York City", "NY", "10001", "US"));
+
+        assertNull(validator.validate(request2));
     }
 }

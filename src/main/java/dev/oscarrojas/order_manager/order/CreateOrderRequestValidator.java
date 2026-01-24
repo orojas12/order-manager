@@ -16,6 +16,10 @@ public class CreateOrderRequestValidator {
             if (line.quantity() < 1) {
                 return new InvalidRequestException("Order line quantity cannot be less than 1");
             }
+
+            if (line.unitPrice() < 0) {
+                return new InvalidRequestException("Order line unit price cannot be negative");
+            }
         }
 
         return null;
