@@ -4,4 +4,4 @@ import dev.oscarrojas.order_manager.core.Address;
 
 import java.util.List;
 
-public record CreateOrderAndCustomerRequest(List<CreateOrderLine> lines, String customerId, Address shippingAddress) {}
+public record CreateOrderAndCustomerRequest(List<CreateOrderItem> items, String customerId, Address shippingAddress) {}

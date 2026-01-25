@@ -2,13 +2,13 @@ package dev.oscarrojas.order_manager.order;
 
 import dev.oscarrojas.order_manager.product.ProductVariant;
 
-public class OrderLine {
+public class OrderItem {
 
     private ProductVariant productVariant;
     private int quantity;
     private long unitPrice;
 
-    public OrderLine(ProductVariant productVariant, int quantity, long unitPrice) {
+    public OrderItem(ProductVariant productVariant, int quantity, long unitPrice) {
         this.productVariant = productVariant;
         this.quantity = quantity;
         this.unitPrice = unitPrice;

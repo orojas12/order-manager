@@ -14,7 +14,7 @@ public class Order {
 
     private String id;
     private OrderStatus status;
-    private List<OrderLine> items;
+    private List<OrderItem> items;
     private List<Payment> payments;
     private List<Refund> refunds;
     private Customer customer;
@@ -38,7 +38,7 @@ public class Order {
     }
 
     public Order(
-            String id, OrderStatus status, Collection<OrderLine> items, Customer customer, Address shippingAddress) {
+            String id, OrderStatus status, Collection<OrderItem> items, Customer customer, Address shippingAddress) {
         this.id = id;
         this.status = status;
         this.items = new ArrayList<>(items);
@@ -60,11 +60,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderLine> getItems() {
+    public List<OrderItem> getItems() {
         return List.copyOf(items);
     }
 
-    public void setItems(Collection<OrderLine> items) {
+    public void setItems(Collection<OrderItem> items) {
         this.items = new ArrayList<>(items);
     }
 
@@ -172,7 +172,7 @@ public class Order {
     public static class Builder {
         private String id;
         private OrderStatus status;
-        private List<OrderLine> items;
+        private List<OrderItem> items;
         private Customer customer;
         private String street;
         private String city;
@@ -195,7 +195,7 @@ public class Order {
             return this;
         }
 
-        public Builder item(OrderLine item) {
+        public Builder item(OrderItem item) {
             items.add(item);
             return this;
         }

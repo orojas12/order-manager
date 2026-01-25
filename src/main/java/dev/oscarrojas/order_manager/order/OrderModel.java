@@ -11,19 +11,19 @@ import java.util.List;
 public record OrderModel(
         String id,
         OrderStatus status,
-        Collection<OrderLineModel> lines,
+        Collection<OrderItemModel> items,
         CustomerModel customer,
         Address shippingAddress,
         Instant creationDate) {
 
     public OrderModel {
-        lines = List.copyOf(lines);
+        items = List.copyOf(items);
     }
 
     public static class Builder {
         private String id;
         private OrderStatus status;
-        private Collection<OrderLineModel> items;
+        private Collection<OrderItemModel> items;
         private CustomerModel customer;
         private Address address;
         private Instant creationDate;
@@ -42,12 +42,12 @@ public record OrderModel(
             return this;
         }
 
-        public Builder item(OrderLineModel item) {
+        public Builder item(OrderItemModel item) {
             items.add(item);
             return this;
         }
 
-        public Builder items(Collection<OrderLineModel> items) {
+        public Builder items(Collection<OrderItemModel> items) {
             this.items = items;
             return this;
         }

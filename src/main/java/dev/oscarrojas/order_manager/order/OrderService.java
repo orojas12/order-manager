@@ -33,7 +33,7 @@ public class OrderService {
     }
 
     private OrderResponse mapToResponse(OrderModel model) {
-        List<OrderLineResponse> lines = model.lines().stream()
+        List<OrderItemResponse> lines = model.items().stream()
                 .map(line -> {
                     ProductResponse product = new ProductResponse(
                             line.variant().product().id(),
@@ -47,7 +47,7 @@ public class OrderService {
                             product,
                             line.variant().attributes());
 
-                    return new OrderLineResponse(variant, line.quantity(), line.unitPrice());
+                    return new OrderItemResponse(variant, line.quantity(), line.unitPrice());
                 })
                 .toList();
 
@@ -58,7 +58,7 @@ public class OrderService {
                 model.customer().phone(),
                 model.customer().address());
 
-        long orderTotal = lines.stream().mapToLong(OrderLineResponse::unitPrice).sum();
+        long orderTotal = lines.stream().mapToLong(OrderItemResponse::unitPrice).sum();
 
         return new OrderResponse(
                 model.id(),
@@ -97,14 +97,14 @@ public class OrderService {
             throw validationException;
         }
 
-        List<OrderLineModel> orderLines = new ArrayList<>();
+        List<OrderItemModel> orderItems = new ArrayList<>();
 
-        for (CreateOrderLine createOrderLine : request.lines()) {
+        for (CreateOrderItem createOrderItem : request.items()) {
             ProductVariantModel variant = variantRepository
-                    .get(createOrderLine.variantId())
+                    .get(createOrderItem.variantId())
                     .orElseThrow(() -> new InvalidRequestException(
-                            "Product variant id %s does not exist".formatted(createOrderLine.variantId())));
-            orderLines.add(new OrderLineModel(variant, createOrderLine.quantity(), createOrderLine.unitPrice()));
+                            "Product variant id %s does not exist".formatted(createOrderItem.variantId())));
+            orderItems.add(new OrderItemModel(variant, createOrderItem.quantity(), createOrderItem.unitPrice()));
         }
 
         CustomerModel customer = customerRepository
@@ -115,7 +115,7 @@ public class OrderService {
         OrderModel order = new OrderModel.Builder()
                 .id(UUID.randomUUID().toString())
                 .status(OrderStatus.CREATED)
-                .items(orderLines)
+                .items(orderItems)
                 .customer(customer)
                 .shippingAddress(request.shippingAddress())
                 .creationDate(Instant.now())

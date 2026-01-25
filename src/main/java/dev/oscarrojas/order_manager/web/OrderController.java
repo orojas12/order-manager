@@ -69,11 +69,11 @@ public class OrderController {
     @PostMapping("/create-order")
     public String createOrder(RedirectAttributes model, CreateOrderForm formData) {
 
-        List<CreateOrderLine> lines = formData.lines().stream()
-                .map(line -> new CreateOrderLine(line.variantId(), line.quantity(), (long) line.price() * 100))
+        List<CreateOrderItem> items = formData.items().stream()
+                .map(item -> new CreateOrderItem(item.variantId(), item.quantity(), (long) item.price() * 100))
                 .toList();
 
-        CreateOrderRequest order = new CreateOrderRequest(lines, formData.customerId(), formData.shippingAddress());
+        CreateOrderRequest order = new CreateOrderRequest(items, formData.customerId(), formData.shippingAddress());
 
         OrderResponse response = service.createOrder(order);
         OrderView orderView = mapToView(response);
@@ -85,12 +85,12 @@ public class OrderController {
     }
 
     private OrderView mapToView(OrderResponse order) {
-        List<OrderLineView> lines = order.lines().stream()
-                .map(line -> new OrderLineView(
-                        line.variant().id(),
-                        line.variant().product().name(),
-                        String.valueOf(line.quantity()),
-                        String.valueOf(line.unitPrice() / 100.0)))
+        List<OrderItemView> items = order.items().stream()
+                .map(item -> new OrderItemView(
+                        item.variant().id(),
+                        item.variant().product().name(),
+                        String.valueOf(item.quantity()),
+                        String.valueOf(item.unitPrice() / 100.0)))
                 .toList();
 
         CustomerView customer = new CustomerView(
@@ -107,7 +107,7 @@ public class OrderController {
                 dateTimeFormatter.format(order.creationDate()),
                 order.status(),
                 orderTotal,
-                lines,
+                items,
                 customer,
                 order.shippingAddress());
     }
