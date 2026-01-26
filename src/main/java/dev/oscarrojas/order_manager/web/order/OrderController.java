@@ -46,7 +46,7 @@ public class OrderController {
         model.addAttribute("orders", orderViews);
         model.addAttribute("paginationLinks", paginationLinks);
 
-        return "orders";
+        return "/orders/orders";
     }
 
     @GetMapping("/order-details")
@@ -61,12 +61,12 @@ public class OrderController {
             model.addAttribute("order", mapToView(response.get()));
         }
 
-        return "order-details";
+        return "/orders/order-details";
     }
 
     @GetMapping("/create-order")
     public String getCreateOrderForm() {
-        return "create-order";
+        return "/orders/create-order";
     }
 
     @PostMapping("/create-order")
