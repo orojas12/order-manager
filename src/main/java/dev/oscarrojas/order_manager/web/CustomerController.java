@@ -1,10 +1,13 @@
 package dev.oscarrojas.order_manager.web;
 
+import dev.oscarrojas.order_manager.customer.CreateCustomerRequest;
 import dev.oscarrojas.order_manager.customer.CustomerService;
-import dev.oscarrojas.order_manager.order.CustomerResponse;
+import dev.oscarrojas.order_manager.customer.CustomerResponse;
+import dev.oscarrojas.order_manager.web.forms.CreateCustomerForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,15 +36,31 @@ public class CustomerController {
         int lastPage = (int) Math.ceil((float) customers.size() / customersPerPage);
         List<PaginationLink> paginationLinks = Pagination.createLinks(page, lastPage, pathName);
 
+        System.out.println(customers);
+
         model.addAttribute("customers", customers);
         model.addAttribute("paginationLinks", paginationLinks);
 
-        return "customers";
+        return "customers/customers";
     }
 
-    @GetMapping("/create-customer")
+    @GetMapping("/customers/create")
     public String createCustomerForm() {
-        return "create-customer";
+        return "customers/create-customer";
+    }
+
+    @PostMapping("/customers/create")
+    public String createCustomerFormSubmit(CreateCustomerForm form) {
+        CreateCustomerRequest request =
+                new CreateCustomerRequest(form.name(), form.email(), form.phone(), form.address());
+
+        CustomerResponse response = service.createCustomer(request);
+
+        CustomerView customer = mapToView(response);
+
+        System.out.println(customer);
+
+        return "redirect:/customers";
     }
 
     private CustomerView mapToView(CustomerResponse customer) {
