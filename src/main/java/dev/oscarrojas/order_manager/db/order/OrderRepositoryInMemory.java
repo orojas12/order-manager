@@ -24,6 +24,13 @@ public class OrderRepositoryInMemory implements OrderRepository {
     }
 
     @Override
+    public Collection<OrderModel> getOrdersByCustomer(String customerId) {
+        return orders.values().stream()
+                .filter(order -> order.customer().id().equals(customerId))
+                .toList();
+    }
+
+    @Override
     public void create(OrderModel order) {
         orders.put(order.id(), order);
     }

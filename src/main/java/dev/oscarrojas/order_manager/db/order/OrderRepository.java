@@ -9,6 +9,8 @@ public interface OrderRepository {
 
     Collection<OrderModel> getAll();
 
+    Collection<OrderModel> getOrdersByCustomer(String customerId);
+
     void create(OrderModel order);
 
     void create(Collection<OrderModel> orders);

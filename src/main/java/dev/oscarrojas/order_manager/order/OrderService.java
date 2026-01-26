@@ -77,6 +77,13 @@ public class OrderService {
                 .toList();
     }
 
+    public List<OrderResponse> getCustomerOrders(String customerId) {
+        return orderRepository.getOrdersByCustomer(customerId).stream()
+                .map(this::mapToResponse)
+                .sorted(Comparator.comparing(OrderResponse::creationDate).reversed())
+                .toList();
+    }
+
     public Optional<OrderResponse> getOrderDetails(String orderId) {
         Optional<OrderModel> opt = orderRepository.get(orderId);
 
