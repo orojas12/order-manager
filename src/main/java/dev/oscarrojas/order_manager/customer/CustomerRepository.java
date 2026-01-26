@@ -5,11 +5,11 @@ import java.util.Optional;
 
 public interface CustomerRepository {
 
-    Collection<CustomerModel> getCustomers();
+    Collection<Customer> getCustomers();
 
-    Optional<CustomerModel> get(String customerId);
+    Optional<Customer> get(String customerId);
 
-    void save(CustomerModel customer);
+    void save(Customer customer);
 
-    void save(Collection<CustomerModel> customers);
+    void save(Collection<Customer> customers);
 }

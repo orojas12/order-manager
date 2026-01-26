@@ -31,7 +31,7 @@ public class CustomerService {
     }
 
     public CustomerResponse createCustomer(CreateCustomerRequest request) {
-        CustomerModel customer = new CustomerModel(
+        Customer customer = new Customer(
                 UUID.randomUUID().toString(),
                 request.name(),
                 request.email(),

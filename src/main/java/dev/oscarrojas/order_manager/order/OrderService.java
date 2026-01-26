@@ -3,13 +3,13 @@ package dev.oscarrojas.order_manager.order;
 import java.time.Instant;
 import java.util.*;
 
-import dev.oscarrojas.order_manager.customer.CustomerModel;
+import dev.oscarrojas.order_manager.customer.Customer;
 import dev.oscarrojas.order_manager.customer.CustomerRepository;
 import dev.oscarrojas.order_manager.customer.CustomerResponse;
 import dev.oscarrojas.order_manager.product.ProductVariantRepository;
 import dev.oscarrojas.order_manager.exception.InvalidRequestException;
 import dev.oscarrojas.order_manager.product.ProductResponse;
-import dev.oscarrojas.order_manager.product.ProductVariantModel;
+import dev.oscarrojas.order_manager.product.ProductVariant;
 import dev.oscarrojas.order_manager.product.ProductVariantResponse;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +32,8 @@ public class OrderService {
         this.createOrderRequestValidator = new CreateOrderRequestValidator();
     }
 
-    private OrderResponse mapToResponse(OrderModel model) {
-        List<OrderItemResponse> lines = model.items().stream()
+    private OrderResponse mapToResponse(Order order) {
+        List<OrderItemResponse> lines = order.items().stream()
                 .map(line -> {
                     ProductResponse product = new ProductResponse(
                             line.variant().product().id(),
@@ -52,23 +52,23 @@ public class OrderService {
                 .toList();
 
         CustomerResponse customer = new CustomerResponse(
-                model.customer().id(),
-                model.customer().name(),
-                model.customer().email(),
-                model.customer().phone(),
-                model.customer().address(),
-                model.customer().dateCreated());
+                order.customer().id(),
+                order.customer().name(),
+                order.customer().email(),
+                order.customer().phone(),
+                order.customer().address(),
+                order.customer().dateCreated());
 
         long orderTotal = lines.stream().mapToLong(OrderItemResponse::unitPrice).sum();
 
         return new OrderResponse(
-                model.id(),
-                model.creationDate(),
-                model.status().toString(),
+                order.id(),
+                order.creationDate(),
+                order.status().toString(),
                 orderTotal,
                 lines,
                 customer,
-                model.shippingAddress());
+                order.shippingAddress());
     }
 
     public List<OrderResponse> getOrders() {
@@ -86,13 +86,13 @@ public class OrderService {
     }
 
     public Optional<OrderResponse> getOrderDetails(String orderId) {
-        Optional<OrderModel> opt = orderRepository.get(orderId);
+        Optional<Order> opt = orderRepository.get(orderId);
 
         if (opt.isEmpty()) {
             return Optional.empty();
         }
 
-        OrderModel data = opt.get();
+        Order data = opt.get();
         OrderResponse response = mapToResponse(data);
         return Optional.of(response);
     }
@@ -105,22 +105,22 @@ public class OrderService {
             throw validationException;
         }
 
-        List<OrderItemModel> orderItems = new ArrayList<>();
+        List<OrderItem> orderItems = new ArrayList<>();
 
         for (CreateOrderItem createOrderItem : request.items()) {
-            ProductVariantModel variant = variantRepository
+            ProductVariant variant = variantRepository
                     .get(createOrderItem.variantId())
                     .orElseThrow(() -> new InvalidRequestException(
                             "Product variant id %s does not exist".formatted(createOrderItem.variantId())));
-            orderItems.add(new OrderItemModel(variant, createOrderItem.quantity(), createOrderItem.unitPrice()));
+            orderItems.add(new OrderItem(variant, createOrderItem.quantity(), createOrderItem.unitPrice()));
         }
 
-        CustomerModel customer = customerRepository
+        Customer customer = customerRepository
                 .get(request.customerId())
                 .orElseThrow(() ->
                         new InvalidRequestException("Customer id %s does not exist".formatted(request.customerId())));
 
-        OrderModel order = new OrderModel.Builder()
+        Order order = new Order.Builder()
                 .id(UUID.randomUUID().toString())
                 .status(OrderStatus.CREATED)
                 .items(orderItems)

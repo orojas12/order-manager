@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface OrderRepository {
 
-    Collection<OrderModel> getAll();
+    Collection<Order> getAll();
 
-    Collection<OrderModel> getOrdersByCustomer(String customerId);
+    Collection<Order> getOrdersByCustomer(String customerId);
 
-    void create(OrderModel order);
+    void create(Order order);
 
-    void create(Collection<OrderModel> orders);
+    void create(Collection<Order> orders);
 
-    Optional<OrderModel> get(String id);
+    Optional<Order> get(String id);
 }

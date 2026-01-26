@@ -7,7 +7,7 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository {
 
-    Optional<ProductModel> get(String productId);
+    Optional<Product> get(String productId);
 
-    void create(ProductModel product);
+    void create(Product product);
 }
