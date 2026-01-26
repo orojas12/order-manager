@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import dev.oscarrojas.order_manager.order.OrderModel;
+import dev.oscarrojas.order_manager.order.OrderRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

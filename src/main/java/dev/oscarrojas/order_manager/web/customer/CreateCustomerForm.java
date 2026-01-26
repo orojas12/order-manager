@@ -1,4 +1,4 @@
-package dev.oscarrojas.order_manager.web.forms;
+package dev.oscarrojas.order_manager.web.customer;
 
 import dev.oscarrojas.order_manager.core.Address;
 

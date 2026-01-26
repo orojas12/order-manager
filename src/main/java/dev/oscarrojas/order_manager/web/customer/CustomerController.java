@@ -1,10 +1,13 @@
-package dev.oscarrojas.order_manager.web;
+package dev.oscarrojas.order_manager.web.customer;
 
 import dev.oscarrojas.order_manager.customer.CreateCustomerRequest;
 import dev.oscarrojas.order_manager.customer.CustomerService;
 import dev.oscarrojas.order_manager.customer.CustomerResponse;
 import dev.oscarrojas.order_manager.order.OrderService;
-import dev.oscarrojas.order_manager.web.forms.CreateCustomerForm;
+import dev.oscarrojas.order_manager.web.Pagination;
+import dev.oscarrojas.order_manager.web.PaginationLink;
+import dev.oscarrojas.order_manager.web.order.OrderController;
+import dev.oscarrojas.order_manager.web.order.OrderView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

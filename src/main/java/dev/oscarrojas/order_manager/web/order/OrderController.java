@@ -1,4 +1,4 @@
-package dev.oscarrojas.order_manager.web;
+package dev.oscarrojas.order_manager.web.order;
 
 import dev.oscarrojas.order_manager.order.*;
 
@@ -6,7 +6,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import dev.oscarrojas.order_manager.web.forms.CreateOrderForm;
+import dev.oscarrojas.order_manager.web.customer.CustomerView;
+import dev.oscarrojas.order_manager.web.Pagination;
+import dev.oscarrojas.order_manager.web.PaginationLink;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.util.*;
 
 import dev.oscarrojas.order_manager.customer.CustomerModel;
-import dev.oscarrojas.order_manager.db.customer.CustomerRepository;
-import dev.oscarrojas.order_manager.db.order.OrderRepository;
-import dev.oscarrojas.order_manager.db.product.ProductVariantRepository;
+import dev.oscarrojas.order_manager.customer.CustomerRepository;
+import dev.oscarrojas.order_manager.customer.CustomerResponse;
+import dev.oscarrojas.order_manager.product.ProductVariantRepository;
 import dev.oscarrojas.order_manager.exception.InvalidRequestException;
 import dev.oscarrojas.order_manager.product.ProductResponse;
 import dev.oscarrojas.order_manager.product.ProductVariantModel;
@@ -56,7 +56,8 @@ public class OrderService {
                 model.customer().name(),
                 model.customer().email(),
                 model.customer().phone(),
-                model.customer().address());
+                model.customer().address(),
+                model.customer().dateCreated());
 
         long orderTotal = lines.stream().mapToLong(OrderItemResponse::unitPrice).sum();
 

@@ -1,6 +1,5 @@
 package dev.oscarrojas.order_manager.customer;
 
-import dev.oscarrojas.order_manager.db.customer.CustomerRepository;
 import dev.oscarrojas.order_manager.exception.InvalidRequestException;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,4 @@
-package dev.oscarrojas.order_manager.db.product;
-
-import dev.oscarrojas.order_manager.product.ProductVariantModel;
+package dev.oscarrojas.order_manager.product;
 
 import java.util.Optional;
 

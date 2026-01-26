@@ -1,6 +1,4 @@
-package dev.oscarrojas.order_manager.db.customer;
-
-import dev.oscarrojas.order_manager.customer.CustomerModel;
+package dev.oscarrojas.order_manager.customer;
 
 import java.util.Collection;
 import java.util.Optional;

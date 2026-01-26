@@ -1,6 +1,5 @@
-package dev.oscarrojas.order_manager.db.product;
+package dev.oscarrojas.order_manager.product;
 
-import dev.oscarrojas.order_manager.product.ProductModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

@@ -1,6 +1,7 @@
 package dev.oscarrojas.order_manager.db.customer;
 
 import dev.oscarrojas.order_manager.customer.CustomerModel;
+import dev.oscarrojas.order_manager.customer.CustomerRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

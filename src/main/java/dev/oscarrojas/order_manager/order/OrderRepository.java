@@ -1,6 +1,4 @@
-package dev.oscarrojas.order_manager.db.order;
-
-import dev.oscarrojas.order_manager.order.OrderModel;
+package dev.oscarrojas.order_manager.order;
 
 import java.util.Collection;
 import java.util.Optional;
