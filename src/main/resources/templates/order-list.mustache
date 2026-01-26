@@ -1,0 +1,45 @@
+<div class="order-list-lg">
+  <div class="row">
+    <div class="col-2 fw-bolder text-body-tertiary">Date Created</div>
+    <div class="col-2 fw-bolder text-body-tertiary">ID</div>
+    <div class="col-2 fw-bolder text-body-tertiary">Status</div>
+    <div class="col-2 fw-bolder text-body-tertiary text-end">Total</div>
+    <div class="col-4 fw-bolder text-body-tertiary">Customer</div>
+  </div>
+  {{#orders}}
+    <div class="row order-list-item">
+      <div class="col-2">{{dateCreated}}</div>
+      <div class="col-2">{{id}}</div>
+      <div class="col-2">{{status}}</div>
+      <div class="col-2 text-end">{{total}}</div>
+      <div class="col-4">{{customer.name}}</div>
+    </div>
+  {{/orders}}
+</div>
+
+<div class="order-list-sm">
+  {{#orders}}
+    <div class="row order-list-item g-2">
+      <div class="col-6">
+        <div class="fw-bolder text-body-tertiary">{{dateCreated}}</div>
+        <div>01/25/26</div>
+      </div>
+      <div class="col-6">
+        <div class="fw-bolder text-body-tertiary">{{id}}</div>
+        <div>ABC-123-DEF</div>
+      </div>
+      <div class="col-6">
+        <div class="fw-bolder text-body-tertiary">{{status}}</div>
+        <div>Shipped</div>
+      </div>
+      <div class="col-6">
+        <div class="fw-bolder text-body-tertiary">{{total}}</div>
+        <div>199.99</div>
+      </div>
+      <div class="col-6">
+        <div class="fw-bolder text-body-tertiary">{{customer.name}}</div>
+        <div>Oscar Rojas</div>
+      </div>
+    </div>
+  {{/orders}}
+</div>

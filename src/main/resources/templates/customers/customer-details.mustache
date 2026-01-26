@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+{{<base/head}}
+  {{$scripts}}
+  {{/scripts}}
+  {{$links}}
+    <link rel="stylesheet" href="/css/customer-details.css">
+    <link rel="stylesheet" href="/css/order-list.css">
+  {{/links}}
+  {{$title}}Customer Details{{/title}}
+{{/base/head}}
+
+<body>
+{{>layout/header}}
+{{<layout/main}}
+  {{$content}}
+    <div class="row">
+      <div class="col-12 col-xl-2 d-flex flex-column align-items-center">
+        <div class="bg-secondary-subtle profile-frame">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-person-fill profile-img text-secondary"
+               viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="col-12 col-xl-10 d-flex flex-column justify-content-center mt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="h2 text-center text-xl-start">Oscar Rojas</div>
+          </div>
+        </div>
+        <div class="row g-4 g-xl-0 mt-3 mt-xl-0">
+          <div class="col-12 col-xl-3">
+            <div class="fw-semibold text-body-tertiary">ID</div>
+            <div>1234567890</div>
+          </div>
+          <div class="col-12 col-xl-3">
+            <div class="fw-semibold text-body-tertiary">Email</div>
+            <div>odrojas612@gmail.com</div>
+          </div>
+          <div class="col-12 col-xl-3">
+            <div class="fw-semibold text-body-tertiary">Phone</div>
+            <div>915-497-5441</div>
+          </div>
+          <div class="col-12 col-xl-3">
+            <div class="fw-semibold text-body-tertiary">Address</div>
+            <div>El Paso, TX 79936, US</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h5 card-title">
+              Orders
+            </h2>
+            <div class="card-text">
+              {{>order-list}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/content}}
+{{/layout/main}}
+</body>
+
+</html>

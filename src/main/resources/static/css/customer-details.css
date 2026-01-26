@@ -1,0 +1,13 @@
+.profile-frame {
+    height: 9rem;
+    width: 9rem;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-img {
+    width: 70%;
+    height: 70%;
+}

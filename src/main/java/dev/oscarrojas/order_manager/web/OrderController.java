@@ -18,11 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class OrderController {
 
     private final OrderService service;
-    private final DateTimeFormatter dateTimeFormatter;
+    public static DateTimeFormatter dateTimeFormatter =
+            DateTimeFormatter.ofPattern("MM/dd/yyyy").withZone(ZoneId.systemDefault());
+    ;
 
     public OrderController(OrderService service) {
         this.service = service;
-        this.dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy").withZone(ZoneId.systemDefault());
     }
 
     @GetMapping("/orders")
@@ -33,7 +34,7 @@ public class OrderController {
         List<OrderView> orderViews = orders.stream()
                 .skip((long) (page - 1) * ordersPerPage)
                 .limit(ordersPerPage)
-                .map(this::mapToView)
+                .map(OrderController::mapToView)
                 .toList();
 
         String pathName = "?page=";
@@ -84,7 +85,7 @@ public class OrderController {
         return "redirect:/order-details?id=" + response.id();
     }
 
-    private OrderView mapToView(OrderResponse order) {
+    public static OrderView mapToView(OrderResponse order) {
         List<OrderItemView> items = order.items().stream()
                 .map(item -> new OrderItemView(
                         item.variant().id(),

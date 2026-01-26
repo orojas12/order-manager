@@ -1,0 +1,13 @@
+.order-list-lg {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .order-list-lg {
+        display: block;
+    }
+
+    .order-list-sm {
+        display: none;
+    }
+}
