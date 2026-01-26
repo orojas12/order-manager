@@ -6,7 +6,6 @@ import java.util.*;
 import dev.oscarrojas.order_manager.customer.Customer;
 import dev.oscarrojas.order_manager.customer.CustomerRepository;
 import dev.oscarrojas.order_manager.customer.CustomerResponse;
-import dev.oscarrojas.order_manager.product.ProductVariantRepository;
 import dev.oscarrojas.order_manager.exception.InvalidRequestException;
 import dev.oscarrojas.order_manager.product.ProductResponse;
 import dev.oscarrojas.order_manager.product.ProductVariant;
