@@ -14,7 +14,7 @@ class CreateProductValidatorTest {
         CreateProductValidator validator = new CreateProductValidator();
 
         CreateProductCommand cmd =
-                new CreateProductCommand("", "", "", List.of(new CreateProductVariantCommand("sku", 1, 0, Map.of())));
+                new CreateProductCommand("", "", "", List.of(new CreateVariantCommand("sku", Map.of())));
 
         List<String> errors = validator.validate(cmd);
 
