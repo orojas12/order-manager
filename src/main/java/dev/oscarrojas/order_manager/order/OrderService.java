@@ -7,46 +7,36 @@ import dev.oscarrojas.order_manager.customer.Customer;
 import dev.oscarrojas.order_manager.customer.CustomerRepository;
 import dev.oscarrojas.order_manager.customer.CustomerResponse;
 import dev.oscarrojas.order_manager.exception.InvalidRequestException;
-import dev.oscarrojas.order_manager.product.ProductResponse;
-import dev.oscarrojas.order_manager.product.ProductVariant;
-import dev.oscarrojas.order_manager.product.ProductVariantResponse;
+import dev.oscarrojas.order_manager.product.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductVariantRepository variantRepository;
+    private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
+    private final ProductVariantMapper variantMapper = new ProductVariantMapper();
+    private final ProductMapper productMapper = new ProductMapper(variantMapper);
 
     private final CreateOrderRequestValidator createOrderRequestValidator;
 
     public OrderService(
             OrderRepository orderRepository,
-            ProductVariantRepository variantRepository,
+            ProductRepository productRepository,
             CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
-        this.variantRepository = variantRepository;
+        this.productRepository = productRepository;
         this.customerRepository = customerRepository;
         this.createOrderRequestValidator = new CreateOrderRequestValidator();
     }
 
     private OrderResponse mapToResponse(Order order) {
-        List<OrderItemResponse> lines = order.items().stream()
-                .map(line -> {
-                    ProductResponse product = new ProductResponse(
-                            line.variant().product().id(),
-                            line.variant().product().brand(),
-                            line.variant().product().name(),
-                            line.variant().product().description());
-
-                    ProductVariantResponse variant = new ProductVariantResponse(
-                            line.variant().id(),
-                            line.variant().sku(),
-                            product,
-                            line.variant().attributes());
-
-                    return new OrderItemResponse(variant, line.quantity(), line.unitPrice());
+        List<OrderItemResponse> items = order.items().stream()
+                .map(item -> {
+                    ProductVariantResponse variant = variantMapper.toResponse(item.variant());
+                    ProductResponse product = productMapper.toResponse(item.product());
+                    return new OrderItemResponse(product, variant, item.quantity(), item.unitPrice());
                 })
                 .toList();
 
@@ -58,14 +48,14 @@ public class OrderService {
                 order.customer().address(),
                 order.customer().dateCreated());
 
-        long orderTotal = lines.stream().mapToLong(OrderItemResponse::unitPrice).sum();
+        long orderTotal = items.stream().mapToLong(OrderItemResponse::unitPrice).sum();
 
         return new OrderResponse(
                 order.id(),
                 order.creationDate(),
                 order.status().toString(),
                 orderTotal,
-                lines,
+                items,
                 customer,
                 order.shippingAddress());
     }
@@ -107,11 +97,15 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (CreateOrderItem createOrderItem : request.items()) {
-            ProductVariant variant = variantRepository
-                    .get(createOrderItem.variantId())
+            ProductVariant variant = productRepository
+                    .getVariantById(createOrderItem.variantId())
                     .orElseThrow(() -> new InvalidRequestException(
                             "Product variant id %s does not exist".formatted(createOrderItem.variantId())));
-            orderItems.add(new OrderItem(variant, createOrderItem.quantity(), createOrderItem.unitPrice()));
+            Product product = productRepository
+                    .getById(variant.productId())
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Orphaned product variant: product id %s does not exist".formatted(variant.productId())));
+            orderItems.add(new OrderItem(product, variant, createOrderItem.quantity(), createOrderItem.unitPrice()));
         }
 
         Customer customer = customerRepository

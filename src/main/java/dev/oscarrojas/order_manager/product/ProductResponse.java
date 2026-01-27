@@ -1,3 +1,6 @@
 package dev.oscarrojas.order_manager.product;
 
-public record ProductResponse(String id, String brand, String name, String description) {}
+import java.util.List;
+
+public record ProductResponse(
+        String id, String brand, String name, String description, List<ProductVariantResponse> variants) {}

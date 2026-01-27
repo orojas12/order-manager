@@ -4,7 +4,9 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    Optional<Product> get(String productId);
+    Optional<Product> getById(String productId);
+
+    Optional<ProductVariant> getVariantById(String id);
 
     void create(Product product);
 }

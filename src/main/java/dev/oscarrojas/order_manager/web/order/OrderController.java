@@ -91,7 +91,7 @@ public class OrderController {
         List<OrderItemView> items = order.items().stream()
                 .map(item -> new OrderItemView(
                         item.variant().id(),
-                        item.variant().product().name(),
+                        item.product().name(),
                         String.valueOf(item.quantity()),
                         String.valueOf(item.unitPrice() / 100.0)))
                 .toList();

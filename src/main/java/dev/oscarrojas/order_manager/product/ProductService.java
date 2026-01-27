@@ -1,7 +1,6 @@
 package dev.oscarrojas.order_manager.product;
 
 import dev.oscarrojas.order_manager.exception.ValidationException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,20 +25,22 @@ public class ProductService {
             throw new ValidationException(errors);
         }
 
+        String productId = UUID.randomUUID().toString();
+
         List<ProductVariant> variants = cmd.variants().stream()
                 .map(variant -> new ProductVariant(
-                        UUID.randomUUID().toString(),
-                        variant.sku(),
-                        variant.price(),
-                        variant.stockQuantity(),
-                        variant.attributes()))
+                        UUID.randomUUID().toString(), variant.sku(), variant.attributes(), productId))
                 .toList();
 
-        Product product =
-                new Product(UUID.randomUUID().toString(), cmd.brand(), cmd.name(), cmd.description(), variants);
+        Product product = new Product(productId, cmd.brand(), cmd.name(), cmd.description(), variants);
 
         repository.create(product);
 
-        return new ProductResponse(product.id(), product.brand(), product.name(), product.description());
+        List<ProductVariantResponse> variantResponses = variants.stream()
+                .map(variant -> new ProductVariantResponse(variant.id(), variant.sku(), variant.attributes()))
+                .toList();
+
+        return new ProductResponse(
+                product.id(), product.brand(), product.name(), product.description(), variantResponses);
     }
 }
