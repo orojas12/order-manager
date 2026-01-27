@@ -1,8 +1,11 @@
 package dev.oscarrojas.order_manager.product;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class ProductMapper {
 
     private final ProductVariantMapper variantMapper;
